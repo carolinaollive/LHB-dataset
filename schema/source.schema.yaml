@@ -1,0 +1,75 @@
+# LocalHarmBench — Source Catalog Schema (v1)
+#
+# Each regional file under sources/ is a YAML document with:
+#   region:   short region id (e.g. brazil, latam_es, africa, india, sea)
+#   updated:  ISO date this catalog file was last reviewed
+#   sources:  a list of source records, each matching the record schema below.
+#
+# This schema is descriptive (human + machine readable). A loader should treat
+# unknown keys as non-fatal so the catalog can evolve without breaking ingestion.
+
+record:
+  id:                # string, stable slug, unique within file. e.g. "br_bcb_alerts"
+  name:              # string, official org/source name (local language)
+  name_en:           # string, English gloss (optional if already English)
+  type:              # enum, see types below
+  country:           # ISO 3166-1 alpha-2 code, or "REGIONAL" for cross-border
+  homepage_url:      # string, org root
+  scam_content_url:  # string, page/section that actually lists scams/fraud alerts
+
+  # --- LIVE INGESTION ---
+  feed: # the machine-pullable endpoint(s); null if none
+    url:             # string|null, RSS/Atom/JSON/API endpoint
+    format:          # enum: rss | atom | json_api | none
+    confirmed:       # bool, true if the endpoint was fetched and verified live
+  ingestion_mechanism: # enum: rss | atom | json_api | html_scrape | pdf_periodic | manual
+  update_cadence:    # enum-ish: realtime | daily | weekly | monthly | irregular | unknown
+
+  # --- METADATA ---
+  languages:         # list of ISO 639-1 codes, e.g. [pt], [es], [en, hi]
+  content_focus:     # list of scam/fraud categories this source covers
+  high_value:        # bool, true for structured "alert list" sources (unauthorized
+                     # entities, investor alerts, scam-number lists) — best signal
+
+  # --- LEGAL ---
+  license_status:    # enum: open_gov | public_domain | cc_by | cc_other |
+                     #       restrictive_tos | unclear
+  license_note:      # string, one-line usability note (what is safe to ingest)
+  usable:            # enum: yes | headlines_only | flagged | no
+                     #   yes            -> full reuse OK (gov public-domain / open license)
+                     #   headlines_only -> ingest titles/links/summaries; avoid full-text copy
+                     #   flagged        -> include but legal review needed before reuse
+                     #   no             -> do not ingest
+
+  notes:             # string, optional free-text caveats
+
+# ---------------------------------------------------------------------------
+enums:
+  type:
+    - consumer_protection   # consumer agencies / ombudsman
+    - police_advisory       # police / cybercrime units
+    - central_bank          # central / reserve banks
+    - financial_regulator   # securities, banking, insurance regulators
+    - telecom_regulator     # telecom / spectrum authorities
+    - fact_checking         # IFCN-style fact-check orgs
+    - ngo                   # NGOs / industry fraud-prevention bodies
+    - app_store_platform    # app stores / social platforms scam reporting
+    - cert_cyber            # national CERT/CSIRT cyber advisories
+
+  content_focus_examples:
+    - phishing
+    - investment_ponzi
+    - unauthorized_entity        # cloned/illegal financial firms
+    - mobile_money_fraud         # PIX, M-Pesa, UPI, GCash, etc.
+    - sim_swap
+    - romance_pig_butchering
+    - job_scam
+    - government_impersonation
+    - ecommerce_fake_shop
+    - loan_app
+    - otp_kyc_fraud
+    - courier_parcel_scam
+    - advance_fee_419
+    - lottery_prize
+    - deepfake_celebrity
+    - tech_support
