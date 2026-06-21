@@ -55,6 +55,9 @@ enums:
     - ngo                   # NGOs / industry fraud-prevention bodies
     - app_store_platform    # app stores / social platforms scam reporting
     - cert_cyber            # national CERT/CSIRT cyber advisories
+    - private_telecom_provider  # telcos / mobile-money operators (Safaricom, MTN MoMo,
+                                # Vodacom) publishing fraud-awareness pages. Currently some
+                                # records use telecom_regulator as an approximation + a note.
 
   content_focus_examples:
     - phishing

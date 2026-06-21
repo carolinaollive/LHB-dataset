@@ -1,0 +1,407 @@
+# LocalHarmBench — Source Catalog: INDIA
+# Schema: ../schema/source.schema.yaml
+# All URLs/feeds verified via fetch or search on the review date below.
+# NOTE: Many .gov.in domains aggressively block automated user-agents (403/503);
+# such pages are real and browser-reachable but need a real UA + rate-limiting
+# for ingestion. "confirmed: true" means the feed endpoint was fetched & validated.
+
+region: india
+updated: 2026-06-21
+sources:
+
+  # ---------- CONFIRMED LIVE FEEDS ----------
+
+  - id: in_rbi_press
+    name: "Reserve Bank of India — Press Releases / Notifications"
+    type: central_bank
+    country: IN
+    homepage_url: https://www.rbi.org.in/
+    scam_content_url: https://rbi.org.in/scripts/bs_viewcontent.aspx?Id=4235
+    feed:
+      url: https://www.rbi.org.in/pressreleases_rss.xml
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: daily
+    languages: [en]
+    content_focus: [unauthorized_entity, mobile_money_fraud, phishing, government_impersonation, loan_app]
+    high_value: true
+    license_status: restrictive_tos
+    license_note: "© RBI. GODL-India applies to specific data.gov.in datasets, NOT to rbi.org.in alert pages. Reusable w/ attribution; verify TOS before redistribution."
+    usable: headlines_only
+    notes: "Notifications RSS (confirmed): https://www.rbi.org.in/notifications_rss.xml. The Alert List of unauthorised forex/ETP entities at the scam_content_url is HTML/PDF only (no RSS) — html_scrape/pdf_periodic. 'RBI Kehta Hai' awareness site is CAPTCHA-gated (not ingestible)."
+
+  - id: in_sebi
+    name: "Securities and Exchange Board of India (SEBI)"
+    type: financial_regulator
+    country: IN
+    homepage_url: https://www.sebi.gov.in/
+    scam_content_url: https://www.sebi.gov.in/sebiweb/home/HomeAction.do?doListing=yes&sid=6&ssid=23&smid=0
+    feed:
+      url: https://www.sebi.gov.in/sebirss.xml
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: daily
+    languages: [en, hi]
+    content_focus: [investment_ponzi, unauthorized_entity, government_impersonation]
+    high_value: true
+    license_status: restrictive_tos
+    license_note: "© SEBI / Government of India. Reproducible w/ attribution but governed by site terms, not an explicit open license."
+    usable: headlines_only
+    notes: "Single combined feed carries Press Releases (incl. 'Caution to Public'), Circulars, Orders. No category-specific feed; no single consolidated fraudulent-advisor list (warnings issued as individual cautions). Investor-ed pages at investor.sebi.gov.in are static, no feed."
+
+  - id: in_pib_press
+    name: "Press Information Bureau (PIB)"
+    name_en: "PIB — government press releases (Fact Check Unit content via social + scrape)"
+    type: fact_checking
+    country: IN
+    homepage_url: https://www.pib.gov.in/
+    scam_content_url: https://www.pib.gov.in/factcheck.aspx
+    feed:
+      url: https://www.pib.gov.in/RssMain.aspx?ModId=6&Lang=1&Regid=1
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: realtime
+    languages: [en, hi]
+    content_focus: [government_impersonation, job_scam, phishing]
+    high_value: true
+    license_status: open_gov
+    license_note: "Official GoI communications; freely reusable w/ attribution. Treat as open_gov (no explicit GODL tag on RSS)."
+    usable: "yes"
+    notes: "RSS is per-ministry/region press-release feeds (ModId 6/8/10; Lang 1=EN, 2=HI), NOT a dedicated Fact-Check feed. PIB Fact Check debunks distributed via @PIBFactCheck (X/Telegram/WhatsApp) + factcheck.aspx (html_scrape)."
+
+  - id: in_altnews
+    name: "Alt News"
+    type: fact_checking
+    country: IN
+    homepage_url: https://www.altnews.in
+    scam_content_url: https://www.altnews.in/category/fake-news/
+    feed:
+      url: https://www.altnews.in/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: daily
+    languages: [en, hi]
+    content_focus: [government_impersonation, deepfake_celebrity]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "All-rights-reserved; IFCN signatory. Headline+link citation only. Less dedicated scam coverage (more political/communal)."
+    usable: headlines_only
+
+  - id: in_boomlive
+    name: "BOOM Live"
+    type: fact_checking
+    country: IN
+    homepage_url: https://www.boomlive.in
+    scam_content_url: https://www.boomlive.in/fact-check
+    feed:
+      url: https://www.boomlive.in/feed
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: daily
+    languages: [en, hi]
+    content_focus: [mobile_money_fraud, phishing, job_scam, investment_ponzi, deepfake_celebrity]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "ToS: all materials BOOM property; 'nothing confers any license.' IFCN signatory. Cite-only. 'Decode/Scams' stream covers UPI/phishing/job/investment."
+    usable: headlines_only
+
+  - id: in_quint_webqoof
+    name: "The Quint — WebQoof"
+    type: fact_checking
+    country: IN
+    homepage_url: https://www.thequint.com
+    scam_content_url: https://www.thequint.com/news/webqoof
+    feed:
+      url: "https://www.thequint.com/stories.rss?section-id=3397&time-period=last-1-month"
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: daily
+    languages: [en, hi]
+    content_focus: [mobile_money_fraud, phishing, investment_ponzi, deepfake_celebrity]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "All rights reserved; IFCN signatory. Cite-only. 'Scamguard' initiative covers UPI/phishing/investment."
+    usable: headlines_only
+    notes: "Feed requires the time-period param (Quintype platform); bare section-id returns empty. JSON API also available via /api/v1."
+
+  - id: in_digiteye
+    name: "DigitEye India"
+    type: fact_checking
+    country: IN
+    homepage_url: https://www.digiteye.in
+    scam_content_url: https://www.digiteye.in/category/fact-check/
+    feed:
+      url: https://www.digiteye.in/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: daily
+    languages: [en]
+    content_focus: [investment_ponzi, mobile_money_fraud, deepfake_celebrity, government_impersonation]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "All rights reserved; IFCN signatory. Cite-only. Good financial/UPI/investment-scam coverage."
+    usable: headlines_only
+
+  # ---------- OPEN DATA ----------
+
+  - id: in_datagovin_ncrp
+    name: "data.gov.in — NCRP cyber-fraud statistics"
+    name_en: "Open Government Data Platform India — NCRP cyber-fraud datasets"
+    type: police_advisory
+    country: IN
+    homepage_url: https://www.data.gov.in/
+    scam_content_url: https://www.data.gov.in/resource/stateut-wise-details-statistics-national-cyber-crime-reporting-portal-ncrp-related-cyber
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: pdf_periodic
+    update_cadence: irregular
+    languages: [en]
+    content_focus: [mobile_money_fraud, phishing, otp_kyc_fraud]
+    high_value: false
+    license_status: open_gov
+    license_note: "GODL-India / NDSAP — free to use/share/adapt w/ attribution. This dataset is CSV/XLSX download only ('Request API' button; no live datastore JSON). Aggregate stats, not per-scam text."
+    usable: "yes"
+    notes: "NCRB cyber-crime datasets also on data.gov.in (API-enablement varies per resource)."
+
+  # ---------- HTML-SCRAPE / NO FEED ----------
+
+  - id: in_i4c_ncrp
+    name: "Indian Cyber Crime Coordination Centre (I4C) / NCRP"
+    type: police_advisory
+    country: IN
+    homepage_url: https://i4c.mha.gov.in/
+    scam_content_url: https://i4c.mha.gov.in/advisories.aspx
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [en, hi]
+    content_focus: [government_impersonation, mobile_money_fraud, otp_kyc_fraud, investment_ponzi, job_scam, courier_parcel_scam, loan_app]
+    high_value: true
+    license_status: open_gov
+    license_note: "GoI content (NIC-hosted); GODL-India/NDSAP for non-sensitive public content w/ attribution; logos/case data excluded. Behind anti-bot WAF (403/503 to fetchers)."
+    usable: "yes"
+    notes: "Best scam-typology coverage in India (digital arrest, UPI, KYC, courier, loan-app). Reporting portal: cybercrime.gov.in (1930)."
+
+  - id: in_certin
+    name: "CERT-In (Indian Computer Emergency Response Team)"
+    type: cert_cyber
+    country: IN
+    homepage_url: https://www.cert-in.org.in/
+    scam_content_url: https://www.cert-in.org.in/s2cMainServlet?pageid=PUBADVLIST
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: weekly
+    languages: [en, hi]
+    content_focus: [phishing]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Govt-published but carries standard 'obtain authorization to reproduce' terms; not explicitly GODL. Tested feed URL → 404 (no RSS); email subscription only. Mostly technical vuln advisories, less consumer-scam."
+    usable: flagged
+
+  - id: in_trai
+    name: "Telecom Regulatory Authority of India (TRAI)"
+    type: telecom_regulator
+    country: IN
+    homepage_url: https://www.trai.gov.in/
+    scam_content_url: https://www.trai.gov.in/ucc
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: weekly
+    languages: [en, hi]
+    content_focus: [phishing, government_impersonation]
+    high_value: false
+    license_status: open_gov
+    license_note: "GoI regulator; GODL-India/NDSAP default for non-sensitive material, attribution recommended. Spam/UCC regulatory framing rather than scam catalog."
+    usable: "yes"
+    notes: "Press releases (Drupal, paginated): https://www.trai.gov.in/notifications/press-release"
+
+  - id: in_dot_sancharsaathi
+    name: "DoT — Sanchar Saathi / Chakshu"
+    type: telecom_regulator
+    country: IN
+    homepage_url: https://www.sancharsaathi.gov.in/
+    scam_content_url: https://sancharsaathi.gov.in/sfc/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: manual
+    update_cadence: irregular
+    languages: [en, hi]
+    content_focus: [government_impersonation, phishing, otp_kyc_fraud, investment_ponzi, job_scam]
+    high_value: false
+    license_status: open_gov
+    license_note: "DoT portal; GODL-India for non-sensitive content. User-submitted reports are sensitive/excluded. Chakshu is a fraud-reporting intake tool, not an advisory publisher; awareness stats surface via PIB."
+    usable: "yes"
+
+  - id: in_nch
+    name: "National Consumer Helpline / Jago Grahak Jago"
+    name_en: "Dept. of Consumer Affairs — National Consumer Helpline"
+    type: consumer_protection
+    country: IN
+    homepage_url: https://consumerhelpline.gov.in/
+    scam_content_url: https://consumerhelpline.gov.in/jago-grahak-jago.php
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [en, hi]
+    content_focus: [ecommerce_fake_shop, job_scam, mobile_money_fraud, otp_kyc_fraud, courier_parcel_scam]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Govt site; awareness creatives carry standard GoI website terms (treat restrictive unless GODL stated). Host 503s to bots."
+    usable: flagged
+
+  - id: in_incometax
+    name: "Income Tax Department (CBDT) — Report Phishing"
+    type: financial_regulator
+    country: IN
+    homepage_url: https://incometaxindia.gov.in/
+    scam_content_url: https://incometaxindia.gov.in/pages/report-phishing.aspx
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [en, hi]
+    content_focus: [phishing, government_impersonation, otp_kyc_fraud]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Standard GoI website terms; no GODL tag. Advisories spike around ITR/refund season. Also @IncomeTaxIndia (X)."
+    usable: flagged
+
+  - id: in_npci
+    name: "NPCI — UPI Safety"
+    name_en: "National Payments Corporation of India — UPI safety/awareness"
+    type: financial_regulator
+    country: IN
+    homepage_url: https://www.npci.org.in/
+    scam_content_url: https://www.npci.org.in/safety-feature
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [en, hi]
+    content_focus: [mobile_money_fraud, otp_kyc_fraud, phishing]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "NPCI is a private (Section 8) company; content copyrighted, all rights reserved. Not open-gov. Reuse requires permission. Campaigns: 'UPI Chalega'."
+    usable: headlines_only
+
+  - id: in_irdai
+    name: "IRDAI — insurance regulator awareness"
+    type: financial_regulator
+    country: IN
+    homepage_url: https://irdai.gov.in/
+    scam_content_url: https://policyholder.gov.in/Be_Alert!.aspx
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [en, hi]
+    content_focus: [government_impersonation, phishing]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "© IRDAI / GoI; reproducible w/ attribution, no explicit open license. Spurious-calls notices, fake-bonus/IRDAI-impersonation."
+    usable: flagged
+
+  - id: in_factly
+    name: "Factly"
+    type: fact_checking
+    country: IN
+    homepage_url: https://factly.in
+    scam_content_url: https://factly.in/category/fact-check/
+    feed:
+      url: https://factly.in/feed/
+      format: rss
+      confirmed: false
+    ingestion_mechanism: rss
+    update_cadence: daily
+    languages: [en, te]
+    content_focus: [government_impersonation, job_scam]
+    high_value: false
+    license_status: cc_by
+    license_note: "Most open of the Indian fact-checkers: content (except videos) licensed CC BY 4.0 — reuse permitted w/ attribution. Feed 403s to bots but endpoint exists (WordPress)."
+    usable: "yes"
+
+  - id: in_vishvasnews
+    name: "Vishvas News"
+    type: fact_checking
+    country: IN
+    homepage_url: https://www.vishvasnews.com
+    scam_content_url: https://www.vishvasnews.com/english/
+    feed:
+      url: https://www.vishvasnews.com/feed/
+      format: rss
+      confirmed: false
+    ingestion_mechanism: rss
+    update_cadence: daily
+    languages: [hi, en, pa]
+    content_focus: [mobile_money_fraud, otp_kyc_fraud, job_scam, loan_app, government_impersonation]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Jagran group news copyright, all rights reserved. IFCN signatory. Feed host-blocked but WordPress pattern. 'Vishvas Scam Alert' coverage."
+    usable: headlines_only
+
+  - id: in_newschecker
+    name: "Newschecker"
+    type: fact_checking
+    country: IN
+    homepage_url: https://newschecker.in
+    scam_content_url: https://newschecker.in/scam-checker/
+    feed:
+      url: https://newschecker.in/feed/
+      format: rss
+      confirmed: false
+    ingestion_mechanism: rss
+    update_cadence: daily
+    languages: [en, hi]
+    content_focus: [mobile_money_fraud, investment_ponzi, deepfake_celebrity, job_scam, government_impersonation]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "All rights reserved; MCA member + IFCN signatory. Feed 403s but endpoint exists. Dedicated 'Scam Watch/Scam Checker' — strong scam coverage."
+    usable: headlines_only
+
+  - id: in_indiatoday_factcheck
+    name: "India Today Fact Check"
+    type: fact_checking
+    country: IN
+    homepage_url: https://www.indiatoday.in
+    scam_content_url: https://www.indiatoday.in/fact-check
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: daily
+    languages: [en]
+    content_focus: [government_impersonation, deepfake_celebrity]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "All rights reserved; IFCN signatory. No dedicated fact-check RSS exists (only numeric non-fact-check section feeds); host blocks bots."
+    usable: headlines_only

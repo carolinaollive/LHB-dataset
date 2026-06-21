@@ -1,0 +1,854 @@
+# LocalHarmBench — Source Catalog: AFRICA
+# Schema: ../schema/source.schema.yaml
+# Covers NG, ZA, KE, GH, EG, MA, TZ, UG, ET, RW, ZM + regional fact-checkers.
+# Emphasis on mobile-money fraud (M-Pesa, MoMo) and investor/Ponzi alert lists.
+# "confirmed: true" = feed endpoint fetched & validated. Many gov sites bot-block
+# (Cloudflare 403/503); flagged per source.
+
+region: africa
+updated: 2026-06-21
+sources:
+
+  # =================== NIGERIA ===================
+
+  - id: ng_sec
+    name: "SEC Nigeria — Securities and Exchange Commission"
+    type: financial_regulator
+    country: NG
+    homepage_url: https://sec.gov.ng/
+    scam_content_url: https://sec.gov.ng/enforcements/keep-track-of-enforcement-updates/
+    feed:
+      url: https://home.sec.gov.ng/feeds/enforcement-updates.rss
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: weekly
+    languages: [en]
+    content_focus: [investment_ponzi, unauthorized_entity, government_impersonation]
+    high_value: true
+    license_status: open_gov
+    license_note: "Nigerian gov agency public notices; no formal open-data license, reusable w/ attribution. STANDOUT: chronological 'Illegal Operator Alert' list + 'known investment scams' (MMM, Loom) + RSS confirmed live. 85+ advisories this cycle."
+    usable: "yes"
+
+  - id: ng_fccpc
+    name: "FCCPC — Federal Competition and Consumer Protection Commission"
+    type: consumer_protection
+    country: NG
+    homepage_url: https://fccpc.gov.ng/
+    scam_content_url: https://fccpc.gov.ng/media/alerts-advisories-announcements/
+    feed:
+      url: https://fccpc.gov.ng/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: weekly
+    languages: [en]
+    content_focus: [loan_app, investment_ponzi, ecommerce_fake_shop]
+    high_value: false
+    license_status: open_gov
+    license_note: "Nigerian gov site; no explicit license, attribution-safe. WordPress RSS 2.0 confirmed. Digital-loan-app abuse, fintech-impersonation."
+    usable: "yes"
+
+  - id: ng_efcc
+    name: "EFCC — Economic and Financial Crimes Commission"
+    type: police_advisory
+    country: NG
+    homepage_url: https://www.efcc.gov.ng/
+    scam_content_url: https://www.efcc.gov.ng/efcc/records/red-alert
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [en]
+    content_focus: [advance_fee_419, investment_ponzi, otp_kyc_fraud, job_scam]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Gov law-enforcement content, no open license. Site behind Cloudflare (503 to bots) — programmatic ingestion unreliable, needs headless browser."
+    usable: flagged
+
+  - id: ng_cbn
+    name: "Central Bank of Nigeria (CBN)"
+    type: central_bank
+    country: NG
+    homepage_url: https://www.cbn.gov.ng/
+    scam_content_url: https://www.cbn.gov.ng/supervision/cpdfraudandscam.html
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [en]
+    content_focus: [phishing, ecommerce_fake_shop, investment_ponzi]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Central bank public notices, no open license. Static HTML 'Fraud and Scam Awareness'."
+    usable: flagged
+
+  - id: ng_ncc
+    name: "Nigerian Communications Commission (NCC)"
+    type: telecom_regulator
+    country: NG
+    homepage_url: https://www.ncc.gov.ng/
+    scam_content_url: https://www.ncc.gov.ng/media-centre/press-releases
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [en]
+    content_focus: [sim_swap, mobile_money_fraud]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Gov content. /feed 404 (no RSS). SIM-swap/USSD fraud items in deeper press pages."
+    usable: flagged
+
+  - id: ng_ngcert
+    name: "ngCERT — Nigeria Computer Emergency Response Team"
+    type: cert_cyber
+    country: NG
+    homepage_url: https://cert.gov.ng/
+    scam_content_url: https://cert.gov.ng/advisories
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: weekly
+    languages: [en]
+    content_focus: [phishing]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Gov CERT. Site 403s to bots. Phishing (SMS/WhatsApp/email), banking/crypto-stealing malware."
+    usable: flagged
+
+  - id: ng_momo
+    name: "MTN MoMo Nigeria — Information Security"
+    name_en: "MoMo Payment Service Bank (private telecom/PSB)"
+    type: telecom_regulator
+    country: NG
+    homepage_url: https://www.momo.ng/
+    scam_content_url: https://www.momo.ng/information-security/
+    feed:
+      url: https://www.momo.ng/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: irregular
+    languages: [en]
+    content_focus: [phishing, lottery_prize, job_scam, investment_ponzi, mobile_money_fraud, otp_kyc_fraud]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Private provider (type is approximate — actually private telecom/PSB). Corporate copyright, not open-licensed; reference/classification only. WordPress RSS confirmed."
+    usable: headlines_only
+
+  # =================== SOUTH AFRICA ===================
+
+  - id: za_fsca
+    name: "FSCA — Financial Sector Conduct Authority"
+    type: financial_regulator
+    country: ZA
+    homepage_url: https://www.fsca.co.za/
+    scam_content_url: https://www.fsca.co.za/Latest-News/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: weekly
+    languages: [en]
+    content_focus: [unauthorized_entity, investment_ponzi]
+    high_value: true
+    license_status: restrictive_tos
+    license_note: "SA regulator content, no explicit open-data license; attribute FSCA. ~107 public warnings/yr (~2+/week). Warnings list + PDFs; no RSS/API. FAIS verification tools at www2.fsca.co.za. NOTE: old /Pages/Warnings-and-Alerts.aspx 404 — use /Latest-News/."
+    usable: flagged
+
+  - id: za_sarb
+    name: "South African Reserve Bank (SARB)"
+    type: central_bank
+    country: ZA
+    homepage_url: https://www.resbank.co.za/
+    scam_content_url: https://www.resbank.co.za/en/home/contact-us/fraud-and-scams
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [en]
+    content_focus: [advance_fee_419, lottery_prize, government_impersonation]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Gov content, attribute SARB. Static guidance page + ad-hoc media-release alerts."
+    usable: flagged
+
+  - id: za_ncc
+    name: "National Consumer Commission (NCC) — South Africa"
+    type: consumer_protection
+    country: ZA
+    homepage_url: https://thencc.org.za/
+    scam_content_url: https://thencc.org.za/consumer-alerts/
+    feed:
+      url: https://thencc.org.za/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: weekly
+    languages: [en]
+    content_focus: [investment_ponzi, ecommerce_fake_shop]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Gov regulator, no open-data license. WordPress RSS confirmed (site-wide; recalls dominate). Pyramid schemes, festive-season scams."
+    usable: flagged
+
+  - id: za_safps
+    name: "SAFPS — Southern African Fraud Prevention Service"
+    type: ngo
+    country: ZA
+    homepage_url: https://www.safps.org.za/
+    scam_content_url: https://www.safps.org.za/Home/LatestNewsEvents
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: weekly
+    languages: [en]
+    content_focus: [otp_kyc_fraud, government_impersonation, romance_pig_butchering, sim_swap]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Private NGO (banking/insurance industry), attribution required. Operates consumer 'Yima' scam toolbox (yima.org.za)."
+    usable: headlines_only
+
+  - id: za_sabric
+    name: "SABRIC — South African Banking Risk Information Centre"
+    type: ngo
+    country: ZA
+    homepage_url: https://www.sabric.co.za/
+    scam_content_url: https://www.sabric.co.za/resources/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [en]
+    content_focus: [phishing, deepfake_celebrity, sim_swap]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Private banking-industry NGO, attribution required. Static resource hub + annual crime-stats PDFs. 'Quishing' (QR phishing), AI/deepfake."
+    usable: headlines_only
+
+  - id: za_jse
+    name: "Johannesburg Stock Exchange (JSE) — Fraud & Scams"
+    type: financial_regulator
+    country: ZA
+    homepage_url: https://www.jse.co.za/
+    scam_content_url: https://www.jse.co.za/me/opportunities-engage/fraud-and-scams-prevention
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [en]
+    content_focus: [investment_ponzi, deepfake_celebrity, advance_fee_419]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Private exchange, copyrighted. 'In the news' dated alert list (HTML). JSE-impersonation, deepfake CEO videos."
+    usable: headlines_only
+
+  - id: za_ncr
+    name: "National Credit Regulator (NCR)"
+    type: financial_regulator
+    country: ZA
+    homepage_url: https://www.ncr.org.za/
+    scam_content_url: https://www.ncr.org.za/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [en]
+    content_focus: [unauthorized_entity, loan_app]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Gov regulator. Alerts via homepage news + numbered circulars (PDFs). Illegal credit providers, fake 'NCR' websites, debt-counsellor fraud."
+    usable: flagged
+
+  - id: za_vodacom
+    name: "Vodacom — Are you being scammed?"
+    name_en: "Vodacom (private telecom)"
+    type: telecom_regulator
+    country: ZA
+    homepage_url: https://now.vodacom.co.za/
+    scam_content_url: https://now.vodacom.co.za/article/are-you-being-scammed
+    feed:
+      url: https://now.vodacom.co.za/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: irregular
+    languages: [en]
+    content_focus: [lottery_prize, sim_swap, phishing, mobile_money_fraud]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Private telecom (type approximate). Corporate copyright; reference/classification only. RSS confirmed on now. subdomain (www. /feed/ 404s). Wangiri, SIM-swap, free-airtime scams."
+    usable: headlines_only
+
+  # =================== KENYA ===================
+
+  - id: ke_cma
+    name: "Capital Markets Authority (CMA) — Kenya"
+    type: financial_regulator
+    country: KE
+    homepage_url: https://www.cma.or.ke/
+    scam_content_url: https://www.cma.or.ke/media/
+    feed:
+      url: https://www.cma.or.ke/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: weekly
+    languages: [en]
+    content_focus: [investment_ponzi, unauthorized_entity]
+    high_value: true
+    license_status: restrictive_tos
+    license_note: "Gov regulator, no explicit license; cite/link OK, clearance for republication. WordPress RSS confirmed. Unlicensed forex/crypto/MMF, Ponzi. NOTE: old Joomla URLs 404 — migrated to WP."
+    usable: flagged
+
+  - id: ke_cbk
+    name: "Central Bank of Kenya (CBK)"
+    type: central_bank
+    country: KE
+    homepage_url: https://www.centralbank.go.ke/
+    scam_content_url: https://www.centralbank.go.ke/fraud-safety/
+    feed:
+      url: https://www.centralbank.go.ke/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: weekly
+    languages: [en]
+    content_focus: [investment_ponzi, phishing, otp_kyc_fraud, advance_fee_419]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Gov central bank, no explicit license. RSS confirmed (surfaces press/notices generically); fraud public-notices mainly PDFs on /releases/public-notices/."
+    usable: flagged
+
+  - id: ke_sasra
+    name: "SASRA — Sacco Societies Regulatory Authority"
+    type: financial_regulator
+    country: KE
+    homepage_url: https://www.sasra.go.ke/
+    scam_content_url: https://www.sasra.go.ke/press-release/
+    feed:
+      url: https://www.sasra.go.ke/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: irregular
+    languages: [en]
+    content_focus: [unauthorized_entity, investment_ponzi]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Gov regulator. RSS confirmed. Unlicensed/fake SACCOs, deposit-taking fraud (e.g. Ekeza Sacco)."
+    usable: flagged
+
+  - id: ke_safaricom_mpesa
+    name: "Safaricom M-PESA — Fraud Awareness"
+    name_en: "Safaricom (private telecom / mobile-money leader)"
+    type: telecom_regulator
+    country: KE
+    homepage_url: https://www.safaricom.co.ke/
+    scam_content_url: https://www.safaricom.co.ke/fraud-awareness/m-pesa-fraud
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [en]
+    content_focus: [mobile_money_fraud, sim_swap, otp_kyc_fraud]
+    high_value: true
+    license_status: restrictive_tos
+    license_note: "Private telecom (type approximate). Corporate copyright; reference only. Highest-value mobile-money content (M-Pesa reversal/fake-SMS/SIM-swap). Custom CMS, no feed; anti-bot 403 needs browser UA."
+    usable: headlines_only
+
+  - id: ke_kecirt
+    name: "National KE-CIRT/CC"
+    type: cert_cyber
+    country: KE
+    homepage_url: https://ke-cirt.go.ke/
+    scam_content_url: https://ke-cirt.go.ke/alerts-advisories/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: weekly
+    languages: [en]
+    content_focus: [phishing, sim_swap, mobile_money_fraud]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Gov CERT. Site 503/blocked to fetch (needs browser UA). Quarterly Cyber Security Reports as PDFs."
+    usable: flagged
+
+  - id: ke_dci
+    name: "Directorate of Criminal Investigations (DCI)"
+    type: police_advisory
+    country: KE
+    homepage_url: https://www.dci.go.ke/
+    scam_content_url: https://www.dci.go.ke/investigative-services
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: manual
+    update_cadence: irregular
+    languages: [en]
+    content_focus: [investment_ponzi, phishing, mobile_money_fraud]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Gov police. Primary scam-alert channel is social media (@DCI_Kenya). DCI itself flags fake 'DCI warning' notices — verify authenticity."
+    usable: flagged
+
+  # =================== GHANA ===================
+
+  - id: gh_bog
+    name: "Bank of Ghana (BoG)"
+    type: central_bank
+    country: GH
+    homepage_url: https://www.bog.gov.gh/
+    scam_content_url: https://www.bog.gov.gh/notice/unlicensed-deposit-taking-entities/
+    feed:
+      url: https://www.bog.gov.gh/news/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: weekly
+    languages: [en]
+    content_focus: [unauthorized_entity, mobile_money_fraud, investment_ponzi]
+    high_value: true
+    license_status: open_gov
+    license_note: "Gov regulatory notices, attribute BoG. RSS confirmed (news feed; notice-category feed empty). Named unlicensed/unauthorized-entity lists live in linked PDFs (pdf_periodic for full extraction). Unlicensed deposit-taking, black-market forex, unlicensed crypto/payment platforms, MoMo fraud."
+    usable: "yes"
+
+  - id: gh_sec
+    name: "Securities and Exchange Commission (SEC) — Ghana"
+    type: financial_regulator
+    country: GH
+    homepage_url: https://sec.gov.gh/
+    scam_content_url: https://sec.gov.gh/list-of-entities-operating-without-a-license-2/
+    feed:
+      url: https://sec.gov.gh/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: weekly
+    languages: [en]
+    content_focus: [unauthorized_entity, investment_ponzi]
+    high_value: true
+    license_status: open_gov
+    license_note: "Public investor-protection notices, attribute SEC Ghana. RSS confirmed. Named 'entities operating without a licence' lists (often PDFs). Ponzi/investment schemes, fraudulent social-media investment ads."
+    usable: "yes"
+
+  - id: gh_csa
+    name: "Cyber Security Authority (CSA) / CERT-GH"
+    type: cert_cyber
+    country: GH
+    homepage_url: https://www.csa.gov.gh/
+    scam_content_url: https://www.csa.gov.gh/cert-gh-alerts
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: weekly
+    languages: [en]
+    content_focus: [phishing, ecommerce_fake_shop, mobile_money_fraud, romance_pig_butchering, job_scam, deepfake_celebrity]
+    high_value: false
+    license_status: open_gov
+    license_note: "Public cybersecurity advisories, attribute CSA. /feed/ 404 (no RSS); custom PHP site, email newsletter only — html_scrape the paginated alerts index. Broad consumer-scam coverage."
+    usable: "yes"
+
+  - id: gh_nca
+    name: "National Communications Authority (NCA) — Ghana"
+    type: telecom_regulator
+    country: GH
+    homepage_url: https://www.nca.org.gh/
+    scam_content_url: https://www.nca.org.gh/
+    feed:
+      url: https://nca.org.gh/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: weekly
+    languages: [en]
+    content_focus: [sim_swap, phishing]
+    high_value: false
+    license_status: open_gov
+    license_note: "Public regulator notices, attribute NCA. RSS confirmed (content:encoded full bodies) but fraud items are a minority of the stream — keyword-filter. SIM-swap, fake NCA SIM-blocking phishing, SMS scams."
+    usable: "yes"
+
+  - id: gh_eoco
+    name: "Economic and Organised Crime Office (EOCO)"
+    type: police_advisory
+    country: GH
+    homepage_url: https://eoco.gov.gh/
+    scam_content_url: https://eoco.gov.gh/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [en]
+    content_focus: [investment_ponzi, romance_pig_butchering, phishing, mobile_money_fraud, job_scam]
+    high_value: false
+    license_status: open_gov
+    license_note: "Public law-enforcement advisories, attribute EOCO. /feed/ 403 (bot-blocked); 'Security Alerts' reached via homepage menu (anchor on homepage). Money-flipping/doubling, romance, Ponzi, lottery/scholarship scams."
+    usable: "yes"
+
+  # =================== EGYPT ===================
+
+  - id: eg_fra
+    name: "Financial Regulatory Authority (FRA) — Egypt"
+    type: financial_regulator
+    country: EG
+    homepage_url: https://fra.gov.eg/en/
+    scam_content_url: https://fra.gov.eg/en/news/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: weekly
+    languages: [ar, en]
+    content_focus: [unauthorized_entity, investment_ponzi]
+    high_value: true
+    license_status: open_gov
+    license_note: "Egyptian gov regulator, standard gov TOS, citable. Maintains 3 lists: warning / negative (convictions) / administrative-measures. Negative-list app at services.fra.gov.eg gated by security gateway (likely json_api behind it). WordPress /feed/ possible, unverified."
+    usable: flagged
+
+  - id: eg_egcert
+    name: "EG-CERT (under NTRA)"
+    type: cert_cyber
+    country: EG
+    homepage_url: https://egcert.eg/
+    scam_content_url: https://egcert.eg/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [ar, en]
+    content_focus: [phishing]
+    high_value: false
+    license_status: open_gov
+    license_note: "Gov CERT. Returned 503 (throttling) on advisory pages. Phishing/malware advisories, not financial-fraud lists."
+    usable: flagged
+
+  # =================== MOROCCO ===================
+
+  - id: ma_ammc
+    name: "AMMC — Autorité Marocaine du Marché des Capitaux"
+    type: financial_regulator
+    country: MA
+    homepage_url: https://www.ammc.ma/fr
+    scam_content_url: https://www.ammc.ma/fr/actualites
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [fr, ar]
+    content_focus: [unauthorized_entity, investment_ponzi]
+    high_value: true
+    license_status: open_gov
+    license_note: "Gov regulator, standard terms, citable. Investor warnings = press releases (communiqués, each a PDF) in /fr/actualites + /fr/suspensions. NOTE: '/fr/espace-emetteurs/rappels-alertes' is issuer-disclosure reminders, NOT scam alerts. Email subscription, no RSS."
+    usable: flagged
+
+  # =================== TANZANIA ===================
+
+  - id: tz_bot
+    name: "Bank of Tanzania (BoT)"
+    type: central_bank
+    country: TZ
+    homepage_url: https://www.bot.go.tz/
+    scam_content_url: https://www.bot.go.tz/DFDI/PublicNotice
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: pdf_periodic
+    update_cadence: irregular
+    languages: [en, sw]
+    content_focus: [unauthorized_entity, mobile_money_fraud, loan_app]
+    high_value: true
+    license_status: open_gov
+    license_note: "Central bank public notices, citable. Public-notice page references a regularly-updated 'Financial Consumer Alert (FCA) List'. Notices are PDFs."
+    usable: "yes"
+
+  - id: tz_tzcert
+    name: "TZ-CERT (under TCRA)"
+    type: cert_cyber
+    country: TZ
+    homepage_url: https://www.tzcert.go.tz/
+    scam_content_url: https://www.tzcert.go.tz/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [en, sw]
+    content_focus: [phishing, ecommerce_fake_shop]
+    high_value: false
+    license_status: open_gov
+    license_note: "Gov CERT. 'Alerts & Warnings'/'Advisories' menus exist; exact sub-page URLs need live discovery (guessed paths 404). Email newsletter, no confirmed RSS."
+    usable: flagged
+
+  # =================== UGANDA ===================
+
+  - id: ug_cma
+    name: "Capital Markets Authority (CMA) — Uganda"
+    type: financial_regulator
+    country: UG
+    homepage_url: https://cmauganda.co.ug/
+    scam_content_url: https://cmauganda.co.ug/fraud-reporting/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: monthly
+    languages: [en]
+    content_focus: [unauthorized_entity, investment_ponzi]
+    high_value: true
+    license_status: open_gov
+    license_note: "Gov regulator. Licensed-firms registry (updated ~monthly) + explicit public warning + fraud-reporting. Unlicensed fund managers, Ponzi/pyramid, fake platforms."
+    usable: "yes"
+
+  - id: ug_bou
+    name: "Bank of Uganda (BoU)"
+    type: central_bank
+    country: UG
+    homepage_url: https://www.bou.or.ug/
+    scam_content_url: https://www.bou.or.ug/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: pdf_periodic
+    update_cadence: irregular
+    languages: [en]
+    content_focus: [investment_ponzi, mobile_money_fraud]
+    high_value: false
+    license_status: open_gov
+    license_note: "Central bank. Public warnings vs Ponzi/pyramid/unlicensed forex confirmed via search; specific URLs not fetch-verified — re-verify. PDFs."
+    usable: flagged
+
+  # =================== ETHIOPIA ===================
+
+  - id: et_nbe
+    name: "National Bank of Ethiopia (NBE)"
+    type: central_bank
+    country: ET
+    homepage_url: https://nbe.gov.et/
+    scam_content_url: https://nbe.gov.et/nbe_news/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [en, am]
+    content_focus: [unauthorized_entity, mobile_money_fraud]
+    high_value: true
+    license_status: open_gov
+    license_note: "Central bank. Public notices (named 23+ unauthorized money-transfer/hawala operators; illegal Birr-paired P2P crypto). Individual posts confirmed; no clean index page; no feed."
+    usable: "yes"
+
+  # =================== RWANDA ===================
+
+  - id: rw_bnr
+    name: "National Bank of Rwanda (BNR)"
+    type: central_bank
+    country: RW
+    homepage_url: https://www.bnr.rw/
+    scam_content_url: https://www.bnr.rw/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [en, rw, fr]
+    content_focus: [investment_ponzi, unauthorized_entity]
+    high_value: false
+    license_status: open_gov
+    license_note: "Central bank. Warnings vs pyramid/crypto schemes (named 3 Friends System Group, OneCoin). Domain blocked by fetch security policy — re-verify."
+    usable: flagged
+
+  # =================== ZAMBIA ===================
+
+  - id: zm_sec
+    name: "Securities and Exchange Commission (SEC) — Zambia"
+    type: financial_regulator
+    country: ZM
+    homepage_url: https://www.seczambia.org.zm/
+    scam_content_url: https://www.seczambia.org.zm/investor-protection/enforcement-actions/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [en]
+    content_focus: [unauthorized_entity, investment_ponzi]
+    high_value: true
+    license_status: open_gov
+    license_note: "Gov regulator. Enforcement-actions taxonomy + 'Warning & Alerts' + warning PDFs. WordPress (/feed/ plausible, unverified); some article slugs 403."
+    usable: "yes"
+
+  # =================== FACT-CHECKERS (regional) ===================
+
+  - id: af_africacheck
+    name: "Africa Check"
+    type: fact_checking
+    country: REGIONAL
+    homepage_url: https://africacheck.org/
+    scam_content_url: https://africacheck.org/fact-checks/spotchecks/hoaxes-scams-and-half-truths
+    feed:
+      url: https://africacheck.org/rss.xml
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: weekly
+    languages: [en, fr]
+    content_focus: [job_scam, lottery_prize, government_impersonation, phishing]
+    high_value: false
+    license_status: cc_other
+    license_note: "Covers ZA/NG/KE/SN. 'Republish in full free' w/ mandatory byline+boilerplate+hyperlinks, NO edits (functionally BY-ND); training materials are CC BY-NC-ND 4.0. Working feed is /rss.xml (NOT /feed/ → 500), structurally valid but currently EMPTY. Site in HTTP 500 error state at review."
+    usable: "yes"
+
+  - id: af_dubawa
+    name: "Dubawa"
+    type: fact_checking
+    country: REGIONAL
+    homepage_url: https://dubawa.org/
+    scam_content_url: https://dubawa.org/category/fact-check/
+    feed:
+      url: https://dubawa.org/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: daily
+    languages: [en]
+    content_focus: [phishing, lottery_prize, government_impersonation]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "NG/GH (+ West Africa). Proprietary copyright, NOT CC. Republish only w/ byline + 'republished' note + link back; database/corpus-building requires permission (contact@dubawa.org). RSS confirmed, 10 live items, multiple/day."
+    usable: headlines_only
+
+  - id: af_pesacheck
+    name: "PesaCheck"
+    type: fact_checking
+    country: REGIONAL
+    homepage_url: https://pesacheck.org/
+    scam_content_url: https://medium.com/pesa-check
+    feed:
+      url: https://medium.com/feed/pesa-check
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: daily
+    languages: [en, fr, sw]
+    content_focus: [phishing, lottery_prize, government_impersonation]
+    high_value: false
+    license_status: cc_by
+    license_note: "Code for Africa initiative across ~18 countries (KE/TZ/UG/ET + Francophone W.Africa). 'All content released under Creative Commons Attribution' (version unspecified). Use Medium RSS (pesacheck.org /feed/ 403s). Medium ToS layer applies. 'HOAX:' title prefix for scams."
+    usable: "yes"
+
+  - id: af_ghanafact
+    name: "GhanaFact (FactSpace West Africa)"
+    type: fact_checking
+    country: GH
+    homepage_url: https://ghanafact.com/
+    scam_content_url: https://ghanafact.com/ghana-news/disinfolab/scams-spam/
+    feed:
+      url: https://ghanafact.com/ghana-news/disinfolab/scams-spam/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: weekly
+    languages: [en]
+    content_focus: [investment_ponzi, deepfake_celebrity, lottery_prize, phishing]
+    high_value: true
+    license_status: restrictive_tos
+    license_note: "© All rights reserved; no CC, no republishing page. CATEGORY-SCOPED scam-only RSS confirmed (ideal). The scam workhorse of the FactSpace group. Investment/crypto scams (AfriQuantumX), AI fake-endorsement."
+    usable: headlines_only
+
+  - id: af_congocheck
+    name: "Congo Check"
+    type: fact_checking
+    country: CD
+    homepage_url: https://congocheck.net/
+    scam_content_url: https://congocheck.net/tag/arnaque/
+    feed:
+      url: https://congocheck.net/tag/arnaque/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: weekly
+    languages: [fr, sw]
+    content_focus: [phishing, lottery_prize, investment_ponzi, government_impersonation]
+    high_value: false
+    license_status: unclear
+    license_note: "DRC (+ CG/CF). No license text anywhere (default copyright applies — no redistribution w/o permission). Scam-scoped /tag/arnaque/feed/ confirmed. Fake giveaways, EaseFlow imposture."
+    usable: flagged
+
+  - id: af_211check
+    name: "211 Check"
+    type: fact_checking
+    country: SS
+    homepage_url: https://www.211check.org/
+    scam_content_url: https://www.211check.org/blog/categories/fact-check
+    feed:
+      url: https://www.211check.org/blog-feed.xml
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: weekly
+    languages: [en]
+    content_focus: [job_scam, lottery_prize, government_impersonation]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "South Sudan. © All Rights Reserved, no CC. Migrated to Wix — only blog-feed.xml works (legacy /feed/ + /tag/scam/ dead). Filter by <category>. Fake grant/job scams, free-internet hoaxes."
+    usable: headlines_only
+
+  - id: af_zimfact
+    name: "ZimFact"
+    type: fact_checking
+    country: ZW
+    homepage_url: https://zimfact.org/
+    scam_content_url: https://zimfact.org/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: manual
+    update_cadence: unknown
+    languages: [en]
+    content_focus: [government_impersonation]
+    high_value: false
+    license_status: unclear
+    license_note: "INACTIVE: zimfact.org returns a hosting-suspension page (down as of 2026-06-21); all subpaths 404. Domain correct but non-operational — DO NOT ingest until restored. Historically political/financial claims, no scam beat."
+    usable: "no"

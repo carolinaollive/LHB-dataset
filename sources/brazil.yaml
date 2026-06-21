@@ -1,0 +1,338 @@
+# LocalHarmBench — Source Catalog: BRAZIL
+# Schema: ../schema/source.schema.yaml
+# All URLs/feeds verified via fetch or search on the review date below.
+# Feed "confirmed: true" means the endpoint was fetched and returned valid XML/JSON.
+
+region: brazil
+updated: 2026-06-21
+sources:
+
+  # ---------- CONFIRMED LIVE FEEDS ----------
+
+  - id: br_certbr_stats
+    name: "CERT.br — Estatísticas de phishing/fraude"
+    name_en: "Brazilian National CERT (NIC.br) — phishing/fraud statistics"
+    type: cert_cyber
+    country: BR
+    homepage_url: https://www.cert.br/
+    scam_content_url: https://stats.cert.br/phishing/
+    feed:
+      url: https://stats.cert.br/rss/stats-rss.xml
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: monthly
+    languages: [pt]
+    content_focus: [phishing, ecommerce_fake_shop, mobile_money_fraud]
+    high_value: false
+    license_status: cc_other
+    license_note: "Feed/stats declared CC BY-NC-ND 4.0. NC + ND are stricter than gov content; verbatim summaries w/ attribution OK, derived/commercial corpus may exceed license."
+    usable: flagged
+    notes: "PIX context appears under banks/payments phishing categories."
+
+  - id: br_efarsas
+    name: "E-farsas"
+    name_en: "E-farsas — hoax/rumor debunking ('since 2002')"
+    type: fact_checking
+    country: BR
+    homepage_url: https://www.e-farsas.com/
+    scam_content_url: https://www.e-farsas.com/categoria/golpes
+    feed:
+      url: https://www.e-farsas.com/feed
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: irregular
+    languages: [pt]
+    content_focus: [lottery_prize, ecommerce_fake_shop, deepfake_celebrity, government_impersonation]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Private editorial site, all rights reserved. Headline+link+short summary as fair citation; no full-text reuse."
+    usable: headlines_only
+
+  - id: br_cvm_alertas
+    name: "CVM — Alertas / Ofertas e atuações irregulares"
+    name_en: "Securities & Exchange Commission of Brazil — irregular-offer / unauthorized-firm alerts"
+    type: financial_regulator
+    country: BR
+    homepage_url: https://www.gov.br/cvm/
+    scam_content_url: https://www.gov.br/cvm/pt-br/assuntos/protecao/alertas/ofertas-atuacoes-irregulares
+    feed:
+      url: http://www.cvm.gov.br/feed/sancionadores.xml
+      format: rss
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: weekly
+    languages: [pt]
+    content_focus: [investment_ponzi, unauthorized_entity]
+    high_value: true
+    license_status: open_gov
+    license_note: "Federal gov.br content under LAI (Lei 12.527/2011); official acts excluded from copyright (Lei 9.610 art.8). Safe to ingest w/ attribution."
+    notes: "No dedicated RSS for the alert list itself (html_scrape). RSS hub at https://conteudo.cvm.gov.br/feed.html exposes enforcement feeds (decisoes/sancionadores/despachos) that partially capture irregular-actor actions."
+    usable: "yes"
+
+  # ---------- CONFIRMED PAGES (no feed / html_scrape) ----------
+
+  - id: br_senacon_consumidor
+    name: "Senacon / consumidor.gov.br"
+    name_en: "National Consumer Secretariat (Ministry of Justice)"
+    type: consumer_protection
+    country: BR
+    homepage_url: https://www.consumidor.gov.br/
+    scam_content_url: https://www.gov.br/mj/pt-br/assuntos/noticias
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [pt]
+    content_focus: [ecommerce_fake_shop, phishing, lottery_prize, courier_parcel_scam]
+    high_value: false
+    license_status: open_gov
+    license_note: "LAI applies; reuse headlines/summaries w/ attribution."
+    usable: "yes"
+    notes: "Golpe advisories spike around shopping events (Black Friday, Carnaval)."
+
+  - id: br_gov_sofri_golpe
+    name: "Sofri um golpe, e agora?"
+    name_en: "'I was scammed, now what?' victim-guidance hub (MJSP + bank anti-fraud alliance)"
+    type: consumer_protection
+    country: BR
+    homepage_url: https://www.gov.br/mj/pt-br/acesso-a-informacao/acoes-e-programas/sofri-um-golpe-e-agora
+    scam_content_url: https://www.gov.br/mj/pt-br/acesso-a-informacao/acoes-e-programas/sofri-um-golpe-e-agora
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [pt]
+    content_focus: [mobile_money_fraud, government_impersonation, phishing]
+    high_value: true
+    license_status: open_gov
+    license_note: "LAI applies. Glossary of ~41 fraud types — high-value taxonomy."
+    usable: "yes"
+
+  - id: br_cisc
+    name: "CISC/SISP — Alertas de golpes digitais"
+    name_en: "Federal Integrated Cybersecurity Center — digital scam alerts"
+    type: cert_cyber
+    country: BR
+    homepage_url: https://www.gov.br/cisc/
+    scam_content_url: https://www.gov.br/cisc/pt-br/denuncias-e-notificacoes/denunciar-fraudes-e-golpes-digitais
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [pt]
+    content_focus: [phishing, government_impersonation]
+    high_value: false
+    license_status: open_gov
+    license_note: "LAI applies. Reporting portal at semfraude.cisc.sisp.gov.br."
+    usable: "yes"
+
+  - id: br_anatel
+    name: "Anatel — Fraudes e chamadas abusivas"
+    name_en: "National Telecommunications Agency — phone-scam advisories"
+    type: telecom_regulator
+    country: BR
+    homepage_url: https://www.gov.br/anatel/
+    scam_content_url: https://www.gov.br/anatel/pt-br/assuntos/dicas-contra-fraudes/fraudes-em-nome-da-anatel
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [pt]
+    content_focus: [phishing, government_impersonation]
+    high_value: false
+    license_status: open_gov
+    license_note: "LAI applies. Related: 'Não Me Perturbe' registry (naomeperturbe.com.br)."
+    usable: "yes"
+
+  - id: br_bcb
+    name: "Banco Central do Brasil"
+    name_en: "Central Bank of Brazil"
+    type: central_bank
+    country: BR
+    homepage_url: https://www.bcb.gov.br/
+    scam_content_url: https://www.bcb.gov.br/meubc/faqs
+    feed:
+      url: https://www.bcb.gov.br/acessoinformacao/rss
+      format: rss
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [pt, en]
+    content_focus: [mobile_money_fraud, phishing]
+    high_value: false
+    license_status: open_gov
+    license_note: "LAI applies. RSS hub is JS-rendered; individual feed XML URLs not yet validated — scrape until confirmed."
+    usable: "yes"
+    notes: "Core to PIX fraud, MED (refund mechanism), fraud-account key blocking, anti-disinfo on 'PIX bug'."
+
+  - id: br_pf
+    name: "Polícia Federal"
+    name_en: "Brazilian Federal Police"
+    type: police_advisory
+    country: BR
+    homepage_url: https://www.gov.br/pf/
+    scam_content_url: https://www.gov.br/pf/pt-br/assuntos/noticias
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [pt]
+    content_focus: [investment_ponzi, government_impersonation]
+    high_value: false
+    license_status: open_gov
+    license_note: "LAI applies. Operation-driven advisories (estelionato, pyramid busts, fake-PF impersonation)."
+    usable: "yes"
+
+  - id: br_procon_sp
+    name: "Procon-SP"
+    name_en: "São Paulo State Consumer Protection Foundation"
+    type: consumer_protection
+    country: BR
+    homepage_url: https://www.procon.sp.gov.br/
+    scam_content_url: https://www.procon.sp.gov.br/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [pt]
+    content_focus: [ecommerce_fake_shop, phishing, lottery_prize]
+    high_value: true
+    license_status: open_gov
+    license_note: "State public body, LAI applies. Maintains 'Evite esses sites' list of scam/non-recommended shopping sites — high value."
+    usable: "yes"
+
+  - id: br_safernet
+    name: "SaferNet Brasil"
+    name_en: "SaferNet Brasil — civil-society cybercrime hotline (INHOPE/Insafe)"
+    type: ngo
+    country: BR
+    homepage_url: https://new.safernet.org.br/
+    scam_content_url: https://indicadores.safernet.org.br/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: daily
+    languages: [pt]
+    content_focus: [phishing, ecommerce_fake_shop]
+    high_value: false
+    license_status: unclear
+    license_note: "NGO; stats shared openly with press but no published reuse terms. Prefer citing published statistics; verify before bulk ingest."
+    usable: flagged
+
+  - id: br_febraban
+    name: "Febraban — 'Se é golpe, tem contragolpe'"
+    name_en: "Brazilian Banking Federation — anti-fraud campaigns"
+    type: ngo
+    country: BR
+    homepage_url: https://portal.febraban.org.br/
+    scam_content_url: https://antifraudes.febraban.org.br/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [pt]
+    content_focus: [mobile_money_fraud, phishing, ecommerce_fake_shop]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Private industry association; copyrighted campaign content. Cite headlines/summaries only."
+    usable: headlines_only
+
+  # ---------- FACT-CHECKERS ----------
+
+  - id: br_aosfatos
+    name: "Aos Fatos"
+    name_en: "Aos Fatos — fact-checking & disinformation monitoring (IFCN)"
+    type: fact_checking
+    country: BR
+    homepage_url: https://www.aosfatos.org/
+    scam_content_url: https://www.aosfatos.org/radar/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: daily
+    languages: [pt]
+    content_focus: [government_impersonation, deepfake_celebrity]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Proprietary; IFCN signatory. /feed, /rss → 404 (custom CMS). Headline+link citation only."
+    usable: headlines_only
+
+  - id: br_boatos
+    name: "Boatos.org"
+    name_en: "Boatos.org — rumor/hoax debunking"
+    type: fact_checking
+    country: BR
+    homepage_url: https://www.boatos.org/
+    scam_content_url: https://www.boatos.org/tecnologia
+    feed:
+      url: https://www.boatos.org/feed/
+      format: rss
+      confirmed: false
+    ingestion_mechanism: rss
+    update_cadence: daily
+    languages: [pt]
+    content_focus: [lottery_prize, ecommerce_fake_shop, government_impersonation]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "WordPress /feed/ likely exists (fetch hit 403 bot-block; validate w/ real RSS client UA). Cite-only."
+    usable: headlines_only
+
+  - id: br_lupa
+    name: "Agência Lupa"
+    name_en: "Agência Lupa — Brazil's first dedicated fact-checker (UOL)"
+    type: fact_checking
+    country: BR
+    homepage_url: https://lupa.uol.com.br/
+    scam_content_url: https://lupa.uol.com.br/
+    feed:
+      url: https://lupa.uol.com.br/feed
+      format: rss
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: daily
+    languages: [pt]
+    content_focus: [government_impersonation, deepfake_celebrity]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "UOL/proprietary; feed unconfirmed (host blocked fetch). Cite-only."
+    usable: headlines_only
+
+  - id: br_comprova
+    name: "Projeto Comprova"
+    name_en: "Comprova — collaborative anti-disinformation journalism coalition"
+    type: fact_checking
+    country: BR
+    homepage_url: https://checamos.afp.com/comprova
+    scam_content_url: https://checamos.afp.com/comprova
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [pt]
+    content_focus: [government_impersonation]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Coalition content; cite-only. Intensifies around elections/events."
+    usable: headlines_only

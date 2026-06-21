@@ -1,0 +1,1204 @@
+# LocalHarmBench — Source Catalog: SPANISH-SPEAKING LATIN AMERICA
+# Schema: ../schema/source.schema.yaml
+# Covers MX, CO, AR, CL, PE (core) + EC, UY, PY, BO, VE, CR, PA, GT, DO + regional.
+# Infra finding: almost no LatAm gov site exposes RSS/JSON. Exceptions confirmed:
+# Peru gob.pe RSS family, Colombia datos.gov.co Socrata API, several WordPress
+# fact-checker /feed/ and gob.* WordPress feeds. "confirmed: true" = feed fetched & valid.
+
+region: latam_es
+updated: 2026-06-21
+sources:
+
+  # =================== MEXICO ===================
+
+  - id: mx_condusef
+    name: "CONDUSEF"
+    name_en: "National Commission for Protection of Financial Services Users"
+    type: consumer_protection
+    country: MX
+    homepage_url: https://www.gob.mx/condusef
+    scam_content_url: https://www.gob.mx/condusef/archivo/prensa
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: weekly
+    languages: [es]
+    content_focus: [government_impersonation, phishing, unauthorized_entity, investment_ponzi, otp_kyc_fraud]
+    high_value: true
+    license_status: open_gov
+    license_note: "Federal public info, reuse w/ attribution; no explicit license. Legacy 'Portal de Fraudes Financieros' + SIPRES registry exist but 503 to bots (headless browser needed)."
+    usable: "yes"
+
+  - id: mx_profeco
+    name: "PROFECO"
+    name_en: "Federal Consumer Protection Agency"
+    type: consumer_protection
+    country: MX
+    homepage_url: https://www.gob.mx/profeco
+    scam_content_url: https://www.gob.mx/profeco/archivo/prensa
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: monthly
+    languages: [es]
+    content_focus: [ecommerce_fake_shop, government_impersonation, courier_parcel_scam]
+    high_value: false
+    license_status: open_gov
+    license_note: "Federal public info. Fake-website/PROFECO-impersonation, WhatsApp delivery fraud, ghost travel agencies."
+    usable: "yes"
+
+  - id: mx_cnbv
+    name: "CNBV — Comisión Nacional Bancaria y de Valores"
+    type: financial_regulator
+    country: MX
+    homepage_url: https://www.gob.mx/cnbv
+    scam_content_url: https://www.cnbv.gob.mx/Documents/LISTADO_ALERTAS_CAPTACION.pdf
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: pdf_periodic
+    update_cadence: irregular
+    languages: [es]
+    content_focus: [unauthorized_entity, investment_ponzi]
+    high_value: true
+    license_status: open_gov
+    license_note: "High-value blacklist PDF (LISTADO_ALERTAS_CAPTACION.pdf — illegal deposit-taking/captación; own-domain 503 to bots). Federal public info."
+    usable: "yes"
+
+  - id: mx_banxico
+    name: "Banco de México (Banxico)"
+    type: central_bank
+    country: MX
+    homepage_url: https://www.banxico.org.mx/
+    scam_content_url: https://www.banxico.org.mx/publicaciones-y-prensa/relacionados-con-falsificacion/comunicados-relacionados-fals.html
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [es, en]
+    content_focus: [phishing]
+    high_value: false
+    license_status: unclear
+    license_note: "Consultable public content but verify Banxico 'Términos legales' for redistribution — treat central-bank pages as cite-only. SIE API is economic data, not fraud."
+    usable: flagged
+
+  - id: mx_certmx
+    name: "CERT-MX / Guardia Nacional"
+    type: cert_cyber
+    country: MX
+    homepage_url: https://www.gob.mx/gncertmx
+    scam_content_url: https://www.gob.mx/gncertmx
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [es]
+    content_focus: [phishing, otp_kyc_fraud]
+    high_value: false
+    license_status: open_gov
+    license_note: "Federal public info."
+    usable: "yes"
+
+  - id: mx_elsabueso
+    name: "El Sabueso — Animal Político / Grupo Animal"
+    type: fact_checking
+    country: MX
+    homepage_url: https://grupoanimal.mx/
+    scam_content_url: https://grupoanimal.mx/verificacion-de-hechos
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: daily
+    languages: [es]
+    content_focus: [deepfake_celebrity, job_scam, ecommerce_fake_shop]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "© Editorial Animal, all rights reserved. ToS EXPRESSLY PROHIBITS automated scraping/download tools + commercial reproduction. No RSS on new platform (animalpolitico.com migrated to grupoanimal.mx). Sitemap-based ingestion needs permission."
+    usable: "no"
+
+  # =================== COLOMBIA ===================
+
+  - id: co_sfc
+    name: "SFC — Superintendencia Financiera de Colombia"
+    name_en: "Financial Superintendence — '¡Alerta! Ofertas fraudulentas'"
+    type: financial_regulator
+    country: CO
+    homepage_url: https://www.superfinanciera.gov.co/
+    scam_content_url: https://www.superfinanciera.gov.co/publicaciones/10115238/alerta-ofertas-fraudulentas/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [es]
+    content_focus: [investment_ponzi, unauthorized_entity, government_impersonation]
+    high_value: true
+    license_status: open_gov
+    license_note: "Ley 1712/2014 transparency; reuse w/ attribution. Sub-pages: /10115308 pyramids, /10115323 crypto/forex, /10115375 insurance, /10115243 false credit. HTML + PDF press releases."
+    usable: "yes"
+
+  - id: co_colcert
+    name: "ColCERT (MinTIC)"
+    type: cert_cyber
+    country: CO
+    homepage_url: https://www.colcert.gov.co/
+    scam_content_url: https://www.colcert.gov.co/800/w3-propertyvalue-412601.html
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: weekly
+    languages: [es]
+    content_focus: [phishing, government_impersonation]
+    high_value: false
+    license_status: open_gov
+    license_note: "Email newsletter + HTML/PDF bulletins. Phishing, gov-entity impersonation, credential exfiltration."
+    usable: "yes"
+
+  - id: co_caivirtual
+    name: "Centro Cibernético Policial / CAI Virtual"
+    type: police_advisory
+    country: CO
+    homepage_url: https://caivirtual.policia.gov.co/
+    scam_content_url: https://caivirtual.policia.gov.co/observatorio
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: weekly
+    languages: [es]
+    content_focus: [ecommerce_fake_shop, phishing, otp_kyc_fraud]
+    high_value: false
+    license_status: open_gov
+    license_note: "Weekly bulletins (HTML + PDF). Online scams, account hacking, cyber extortion."
+    usable: "yes"
+
+  - id: co_datosgov_cyber
+    name: "datos.gov.co — cybercrime datasets"
+    type: police_advisory
+    country: CO
+    homepage_url: https://www.datos.gov.co/
+    scam_content_url: https://www.datos.gov.co/resource/4v6r-wu98.json
+    feed:
+      url: "https://www.datos.gov.co/api/catalog/v1?q=delitos%20informaticos"
+      format: json_api
+      confirmed: true
+    ingestion_mechanism: json_api
+    update_cadence: monthly
+    languages: [es]
+    content_focus: [phishing, ecommerce_fake_shop]
+    high_value: false
+    license_status: open_gov
+    license_note: "Socrata SODA 2.x API confirmed; CC-BY-style under Ley 1712. Incident counts/statistics, NOT named-entity scam alerts."
+    usable: "yes"
+
+  - id: co_colombiacheck
+    name: "ColombiaCheck (Consejo de Redacción)"
+    type: fact_checking
+    country: CO
+    homepage_url: https://colombiacheck.com/
+    scam_content_url: https://colombiacheck.com/chequeos
+    feed:
+      url: https://colombiacheck.com/rss.xml
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: daily
+    languages: [es]
+    content_focus: [phishing, deepfake_celebrity, investment_ponzi, government_impersonation]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "IFCN signatory; '© Derechos reservados', ToS grants no reuse. Cite/link only. /rss.xml confirmed (large valid XML; /feed paths 404)."
+    usable: headlines_only
+
+  - id: co_lasillavacia
+    name: "La Silla Vacía — Detector de Mentiras"
+    type: fact_checking
+    country: CO
+    homepage_url: https://www.lasillavacia.com/
+    scam_content_url: https://www.lasillavacia.com/detector-de-mentiras/
+    feed:
+      url: https://www.lasillavacia.com/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: daily
+    languages: [es]
+    content_focus: [government_impersonation, deepfake_celebrity]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Copyrighted editorial; cite-only. Site-wide RSS confirmed (political focus)."
+    usable: headlines_only
+
+  # =================== ARGENTINA ===================
+
+  - id: ar_cnv
+    name: "CNV — Comisión Nacional de Valores"
+    type: financial_regulator
+    country: AR
+    homepage_url: https://www.cnv.gov.ar/
+    scam_content_url: "https://www.cnv.gov.ar/SitioWeb/ProteccionInversor?columna=1&seccion=advertencia"
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: weekly
+    languages: [es]
+    content_focus: [unauthorized_entity, investment_ponzi, deepfake_celebrity]
+    high_value: true
+    license_status: open_gov
+    license_note: "National gov, no explicit license. Holds the unauthorized-entities/advertencia role (BCRA does not). Alerts = per-GUID PDF blobs, no index feed."
+    usable: "yes"
+
+  - id: ar_bcra
+    name: "BCRA — Banco Central de la República Argentina"
+    type: central_bank
+    country: AR
+    homepage_url: https://www.bcra.gob.ar/
+    scam_content_url: https://www.bcra.gob.ar/realizar-un-reclamo-ante-el-banco-central-por-fraude-o-estafa/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [es, en]
+    content_focus: [government_impersonation, phishing, otp_kyc_fraud]
+    high_value: false
+    license_status: open_gov
+    license_note: "National gov. No unauthorized-entities blacklist (that's CNV). Campaign #VosSosLaClave. Legacy ASP site, no feed."
+    usable: "yes"
+
+  - id: ar_ufeci
+    name: "UFECI — Unidad Fiscal Especializada en Ciberdelincuencia (MPF)"
+    type: police_advisory
+    country: AR
+    homepage_url: https://www.mpf.gob.ar/ufeci/
+    scam_content_url: https://www.fiscales.gob.ar/ciberdelincuencia/
+    feed:
+      url: https://www.fiscales.gob.ar/ciberdelincuencia/feed/
+      format: rss
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: monthly
+    languages: [es]
+    content_focus: [investment_ponzi, job_scam, otp_kyc_fraud, government_impersonation, ecommerce_fake_shop]
+    high_value: false
+    license_status: open_gov
+    license_note: "National prosecution unit. WordPress /feed/ returns HTTP 500 (unconfirmed) — use html_scrape."
+    usable: "yes"
+
+  - id: ar_defensaconsumidor
+    name: "Defensa del Consumidor (Sec. Industria y Comercio)"
+    type: consumer_protection
+    country: AR
+    homepage_url: https://www.argentina.gob.ar/economia/industria-y-comercio/defensadelconsumidor
+    scam_content_url: https://www.argentina.gob.ar/produccion/defensadelconsumidor/alertas-de-productos
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: monthly
+    languages: [es]
+    content_focus: [ecommerce_fake_shop, phishing]
+    high_value: false
+    license_status: open_gov
+    license_note: "National gov. datos.gob.ar CKAN live but 0 fraude/estafa datasets."
+    usable: "yes"
+
+  - id: ar_chequeado
+    name: "Chequeado"
+    type: fact_checking
+    country: AR
+    homepage_url: https://chequeado.com/
+    scam_content_url: https://chequeado.com/tag/estafas/
+    feed:
+      url: https://chequeado.com/tag/estafas/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: weekly
+    languages: [es]
+    content_focus: [deepfake_celebrity, investment_ponzi, phishing]
+    high_value: true
+    license_status: restrictive_tos
+    license_note: "Private NGO; runs LatamChequea network. Historically CC-BY but current variant unverified — treat as needs-permission. BEST scam-specific confirmed feed (per-tag /estafas/feed/)."
+    usable: headlines_only
+
+  # =================== CHILE ===================
+
+  - id: cl_cmf
+    name: "CMF — Comisión para el Mercado Financiero — Alerta de fraudes"
+    type: financial_regulator
+    country: CL
+    homepage_url: https://www.cmfchile.cl/
+    scam_content_url: https://www.cmfchile.cl/portal/principal/613/w3-propertyvalue-43333.html
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: weekly
+    languages: [es, en]
+    content_focus: [unauthorized_entity, investment_ponzi, loan_app]
+    high_value: true
+    license_status: open_gov
+    license_note: "Public info. Lists fraudulent credit entities, predatory loan apps, unauthorized investment platforms w/ downloadable Excel lists — highest-value CL fraud source. api.cmfchile.cl is banking data, NOT fraud alerts."
+    usable: "yes"
+
+  - id: cl_sernac
+    name: "SERNAC — Servicio Nacional del Consumidor"
+    type: consumer_protection
+    country: CL
+    homepage_url: https://www.sernac.cl/
+    scam_content_url: https://www.sernac.cl/portal/604/w3-channel.html
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: weekly
+    languages: [es]
+    content_focus: [phishing, ecommerce_fake_shop]
+    high_value: false
+    license_status: open_gov
+    license_note: "Public info, attribution advised. Legacy Plone CMS, no feed."
+    usable: "yes"
+
+  - id: cl_csirt
+    name: "CSIRT Nacional (Agencia Nacional de Ciberseguridad)"
+    type: cert_cyber
+    country: CL
+    homepage_url: https://csirt.gob.cl/
+    scam_content_url: https://www.csirt.gob.cl/alertas/
+    feed:
+      url: https://csirt.gob.cl/feed/
+      format: rss
+      confirmed: false
+    ingestion_mechanism: rss
+    update_cadence: weekly
+    languages: [es]
+    content_focus: [phishing, otp_kyc_fraud]
+    high_value: false
+    license_status: open_gov
+    license_note: "Most likely real gov WordPress RSS in the LatAm set, but fully gated behind Cloudflare JS challenge (403 to all clients incl. curl) — needs headless/challenge-solving fetcher. Phishing w/ IOCs, smishing."
+    usable: flagged
+
+  - id: cl_pdi
+    name: "PDI — Policía de Investigaciones / BRICIB"
+    type: police_advisory
+    country: CL
+    homepage_url: https://www.pdichile.cl/
+    scam_content_url: https://www.pdichile.cl/centro-de-prensa
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: weekly
+    languages: [es]
+    content_focus: [phishing, otp_kyc_fraud, ecommerce_fake_shop]
+    high_value: false
+    license_status: open_gov
+    license_note: "Blocks WebFetch (403); reachable via browser UA over HTTP."
+    usable: flagged
+
+  - id: cl_fastcheck
+    name: "Fast Check CL"
+    type: fact_checking
+    country: CL
+    homepage_url: https://www.fastcheck.cl/
+    scam_content_url: https://www.fastcheck.cl/category/estafas/
+    feed:
+      url: https://www.fastcheck.cl/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: daily
+    languages: [es]
+    content_focus: [investment_ponzi, phishing, lottery_prize, deepfake_celebrity]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "IFCN-verified. '© Fast Check' in feed; cite-only. Site-wide RSS confirmed (category feed returns HTML). Dedicated /estafas/ section."
+    usable: headlines_only
+
+  - id: cl_malaespina
+    name: "Mala Espina Check"
+    type: fact_checking
+    country: CL
+    homepage_url: https://www.malaespinacheck.cl/
+    scam_content_url: https://www.malaespinacheck.cl/category/tecnologia-y-redes/
+    feed:
+      url: https://www.malaespinacheck.cl/category/tecnologia-y-redes/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: daily
+    languages: [es]
+    content_focus: [phishing, ecommerce_fake_shop, deepfake_celebrity]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Copyrighted; cite-only. Category-scoped RSS confirmed (tech/scams)."
+    usable: headlines_only
+
+  # =================== PERU (best feed infrastructure) ===================
+
+  - id: pe_indecopi
+    name: "INDECOPI — Alertas de Consumo"
+    type: consumer_protection
+    country: PE
+    homepage_url: https://www.gob.pe/indecopi
+    scam_content_url: https://www.alertasdeconsumo.gob.pe/
+    feed:
+      url: "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=indecopi"
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: weekly
+    languages: [es]
+    content_focus: [ecommerce_fake_shop, phishing, otp_kyc_fraud]
+    high_value: false
+    license_status: open_gov
+    license_note: "gob.pe public-sector info, reuse w/ attribution. RSS curl-verified (HTTP 200, 25 items). Needs browser UA."
+    usable: "yes"
+
+  - id: pe_sbs
+    name: "SBS — Superintendencia de Banca, Seguros y AFP"
+    name_en: "Informalidad / unauthorized entities"
+    type: financial_regulator
+    country: PE
+    homepage_url: https://www.sbs.gob.pe/
+    scam_content_url: https://www.sbs.gob.pe/usuarios/aprende-con-la-sbs/informalidad-en-los-sistemas-supervisados-por-sbs
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: monthly
+    languages: [es]
+    content_focus: [unauthorized_entity, investment_ponzi]
+    high_value: true
+    license_status: open_gov
+    license_note: "High-value named-entity list (e.g. Coopac La Troyca, Capitalex, Finniu). Own domain (not gob.pe), no RSS. Report: informalidad@sbs.gob.pe."
+    usable: "yes"
+
+  - id: pe_smv
+    name: "SMV — Superintendencia del Mercado de Valores"
+    type: financial_regulator
+    country: PE
+    homepage_url: https://www.gob.pe/smv
+    scam_content_url: https://www.gob.pe/institucion/smv/colecciones/63154-advertencias-para-inversionistas-y-publico-en-general
+    feed:
+      url: "https://www.gob.pe/busquedas.rss?contenido[]=noticias&institucion[]=smv"
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: weekly
+    languages: [es]
+    content_focus: [unauthorized_entity, investment_ponzi, deepfake_celebrity]
+    high_value: true
+    license_status: open_gov
+    license_note: "gob.pe RSS confirmed (live SMV items). Unauthorized securities intermediation, influencer investment fraud."
+    usable: "yes"
+
+  - id: pe_pecert
+    name: "PECERT / CNSD — Centro Nacional de Seguridad Digital (PCM)"
+    type: cert_cyber
+    country: PE
+    homepage_url: https://www.pecert.gob.pe/
+    scam_content_url: https://www.gob.pe/institucion/pcm/colecciones/791-alerta-integrada-de-seguridad-digital-del-cnsd
+    feed:
+      url: "https://www.gob.pe/busquedas.rss?contenido[]=informes_publicaciones&institucion[]=pcm"
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: daily
+    languages: [es]
+    content_focus: [phishing, ecommerce_fake_shop]
+    high_value: false
+    license_status: open_gov
+    license_note: "gob.pe RSS confirmed (25 items; filter for digital-security). Near-daily numbered 'Alerta Integrada' series."
+    usable: "yes"
+
+  - id: pe_convoca
+    name: "Convoca / Convoca Verifica"
+    type: fact_checking
+    country: PE
+    homepage_url: https://convoca.pe/
+    scam_content_url: https://convoca.pe/convoca-verifica
+    feed:
+      url: https://convoca.pe/rss.xml
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: weekly
+    languages: [es]
+    content_focus: [investment_ponzi, ecommerce_fake_shop]
+    high_value: false
+    license_status: unclear
+    license_note: "Nonprofit; some content CC, not site-wide guaranteed — verify per-article. /rss.xml confirmed (/feed returns HTML)."
+    usable: flagged
+
+  # =================== ECUADOR ===================
+
+  - id: ec_superbancos
+    name: "Superintendencia de Bancos del Ecuador — entidades no autorizadas"
+    type: financial_regulator
+    country: EC
+    homepage_url: https://www.superbancos.gob.ec/bancos/
+    scam_content_url: https://www.superbancos.gob.ec/bancos/listado-de-entidades-no-autorizadas-a-operar-en-el-pais/
+    feed:
+      url: https://www.superbancos.gob.ec/bancos/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: html_scrape
+    update_cadence: weekly
+    languages: [es]
+    content_focus: [unauthorized_entity, investment_ponzi, loan_app]
+    high_value: true
+    license_status: open_gov
+    license_note: "LOTAIP transparency; attribute. Canonical EC unauthorized-entities registry. WordPress /feed/ confirmed but SITE-WIDE (fraud items interleaved); the dedicated listing page itself is html_scrape only. Filter feed by: estafa/fraude/no autorizad*."
+    usable: "yes"
+
+  - id: ec_scvs
+    name: "Superintendencia de Compañías, Valores y Seguros (SCVS)"
+    type: financial_regulator
+    country: EC
+    homepage_url: https://www.supercias.gob.ec/
+    scam_content_url: https://www.supercias.gob.ec/portalscvs/Noticias/Noticias.php
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: monthly
+    languages: [es]
+    content_focus: [unauthorized_entity, investment_ponzi]
+    high_value: false
+    license_status: open_gov
+    license_note: "Legacy WebSphere portal, no RSS. Unauthorized investment platforms (e.g. LIBERTEX warning)."
+    usable: "yes"
+
+  - id: ec_ecucert
+    name: "EcuCERT (ARCOTEL)"
+    type: cert_cyber
+    country: EC
+    homepage_url: https://www.ecucert.gob.ec/
+    scam_content_url: https://www.ecucert.gob.ec/alertas/
+    feed:
+      url: https://www.ecucert.gob.ec/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: weekly
+    languages: [es]
+    content_focus: [phishing]
+    high_value: false
+    license_status: open_gov
+    license_note: "Gov CERT (FIRST member); attribute. WordPress site-wide /feed/ confirmed (mixes alerts/docs/news). Mostly vuln/malware/phishing."
+    usable: "yes"
+
+  - id: ec_fiscalia
+    name: "Fiscalía General del Estado — delitos informáticos"
+    type: police_advisory
+    country: EC
+    homepage_url: https://www.fiscalia.gob.ec/
+    scam_content_url: https://www.fiscalia.gob.ec/los-delitos-informaticos-van-desde-el-fraude-hasta-el-espionaje/
+    feed:
+      url: https://www.fiscalia.gob.ec/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: daily
+    languages: [es]
+    content_focus: [phishing, otp_kyc_fraud]
+    high_value: false
+    license_status: open_gov
+    license_note: "Public prosecutorial content. WordPress site-wide /feed/ confirmed (cybercrime items less frequent). Article pages JS-rendered (need headless for full body)."
+    usable: "yes"
+
+  - id: ec_ecuadorchequea
+    name: "Ecuador Chequea"
+    type: fact_checking
+    country: EC
+    homepage_url: https://ecuadorchequea.com/
+    scam_content_url: https://ecuadorchequea.com/category/verificaciones/
+    feed:
+      url: https://ecuadorchequea.com/category/verificaciones/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: daily
+    languages: [es]
+    content_focus: [phishing, investment_ponzi, deepfake_celebrity]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "IFCN-certified, Meta partner. '© Copyright' all-rights-reserved, no terms page granting reuse. Category-scoped RSS confirmed. Identified 159+ fake bank-credit accounts."
+    usable: headlines_only
+
+  # =================== URUGUAY ===================
+
+  - id: uy_bcu
+    name: "Banco Central del Uruguay (BCU) — Usuario Financiero"
+    type: central_bank
+    country: UY
+    homepage_url: https://usuariofinanciero.bcu.gub.uy/
+    scam_content_url: https://usuariofinanciero.bcu.gub.uy/recomendaciones-y-advertencias/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: monthly
+    languages: [es]
+    content_focus: [unauthorized_entity, investment_ponzi, deepfake_celebrity]
+    high_value: true
+    license_status: unclear
+    license_note: "Lists unauthorized/illegal entities + deepfake-BCU investment-scam warnings. Domain 503s to bots; MEF gub.uy news mirror republishes advertencias (scrapeable)."
+    usable: flagged
+
+  - id: uy_certuy
+    name: "CERTuy (AGESIC)"
+    type: cert_cyber
+    country: UY
+    homepage_url: https://www.gub.uy/centro-nacional-respuesta-incidentes-seguridad-informatica/
+    scam_content_url: https://www.gub.uy/centro-nacional-respuesta-incidentes-seguridad-informatica/tematica/amenazas-y-alertas
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: weekly
+    languages: [es]
+    content_focus: [phishing]
+    high_value: false
+    license_status: open_gov
+    license_note: "gub.uy Drupal exposes no RSS at standard paths. cert.uy redirects here. Mostly vuln advisories; phishing tracked but listing skews technical."
+    usable: "yes"
+
+  - id: uy_defensaconsumidor
+    name: "Defensa del Consumidor (MEF) — 'Que no te defrauden'"
+    type: consumer_protection
+    country: UY
+    homepage_url: https://www.gub.uy/ministerio-economia-finanzas/unidad-defensa-consumidor
+    scam_content_url: https://www.gub.uy/ministerio-economia-finanzas/comunicacion/campanas/te-defrauden-campana-para-prevencion-fraudes
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [es]
+    content_focus: [phishing, ecommerce_fake_shop]
+    high_value: false
+    license_status: open_gov
+    license_note: "Open-data org at catalogodatos.gub.uy (CKAN, non-scam datasets). MEF news endpoint is the scrape-friendly mirror for BCU + consumer alerts."
+    usable: "yes"
+
+  # =================== PARAGUAY ===================
+
+  - id: py_bcp
+    name: "Superintendencia de Bancos / Banco Central del Paraguay"
+    type: financial_regulator
+    country: PY
+    homepage_url: https://www.bcp.gov.py/
+    scam_content_url: https://www.bcp.gov.py/superintendencias1
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [es]
+    content_focus: [unauthorized_entity, phishing]
+    high_value: true
+    license_status: open_gov
+    license_note: "Advertencias al público vs non-supervised entities/unauthorized insurers/forex (~60 entities). Site 403s to bots (bot filter, not auth) — needs browser UA. Registry + periodic PDFs."
+    usable: flagged
+
+  - id: py_sedeco
+    name: "SEDECO — Secretaría de Defensa del Consumidor"
+    type: consumer_protection
+    country: PY
+    homepage_url: https://sedeco.gov.py/
+    scam_content_url: https://sedeco.gov.py/consejos-para-evitar-estafas-y-fraudes-financieros/
+    feed:
+      url: https://sedeco.gov.py/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: weekly
+    languages: [es]
+    content_focus: [investment_ponzi, ecommerce_fake_shop, phishing]
+    high_value: false
+    license_status: unclear
+    license_note: "Gov site, no explicit license (treat restrictive by default; cite OK). WordPress RSS confirmed."
+    usable: flagged
+
+  - id: py_certpy
+    name: "CERT-PY (MITIC)"
+    type: cert_cyber
+    country: PY
+    homepage_url: https://www.cert.gov.py/
+    scam_content_url: https://www.cert.gov.py/boletines-y-alertas-de-ciberseguridad/
+    feed:
+      url: https://www.cert.gov.py/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: weekly
+    languages: [es]
+    content_focus: [phishing]
+    high_value: false
+    license_status: unclear
+    license_note: "Gov (MITIC), no explicit license. Site-wide WordPress RSS confirmed; primarily vuln advisories, not consumer scams. Category feed empty — use main /feed/."
+    usable: flagged
+
+  # =================== BOLIVIA ===================
+
+  - id: bo_asfi
+    name: "ASFI — Autoridad de Supervisión del Sistema Financiero"
+    type: financial_regulator
+    country: BO
+    homepage_url: https://www.asfi.gob.bo/
+    scam_content_url: https://www.asfi.gob.bo/index.php/pagina-de-comunicados
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: monthly
+    languages: [es]
+    content_focus: [unauthorized_entity, investment_ponzi, deepfake_celebrity]
+    high_value: true
+    license_status: unclear
+    license_note: "Gov (.gob.bo), no explicit license (cite OK). Comunicados list = alertas w/ PDF per item (Trade AI Bolivia, Manga Markets, Telegram fraud). Drupal default RSS disabled (rss.xml 404). NOTE: old /alertas-asfi.html 404 — use /pagina-de-comunicados."
+    usable: flagged
+
+  - id: bo_boliviaverifica
+    name: "Bolivia Verifica"
+    type: fact_checking
+    country: BO
+    homepage_url: https://boliviaverifica.bo/
+    scam_content_url: https://boliviaverifica.bo/tag/estafas-digitales/
+    feed:
+      url: https://boliviaverifica.bo/tag/estafas-digitales/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: daily
+    languages: [es]
+    content_focus: [deepfake_celebrity, investment_ponzi, job_scam, lottery_prize, government_impersonation]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Independent non-profit; 'Derechos reservados', no CC. SCAM-SCOPED tag feed confirmed (best for benchmark). AI deepfake official-endorsement scams, BitdexApp, fake gov bonos/jobs."
+    usable: headlines_only
+
+  - id: bo_chequeabolivia
+    name: "ChequeaBolivia (CERES)"
+    type: fact_checking
+    country: BO
+    homepage_url: https://chequeabolivia.bo/
+    scam_content_url: https://chequeabolivia.bo/
+    feed:
+      url: https://chequeabolivia.bo/rss.xml
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: daily
+    languages: [es]
+    content_focus: [phishing, lottery_prize, investment_ponzi]
+    high_value: false
+    license_status: unclear
+    license_note: "NGO (CERES); journalistic content, likely copyrighted (cite OK). Use rss.xml (/feed 404). Brand impersonation, fake casinos/lotteries."
+    usable: flagged
+
+  # =================== VENEZUELA ===================
+
+  - id: ve_sudeban
+    name: "SUDEBAN — Superintendencia de Instituciones del Sector Bancario"
+    type: financial_regulator
+    country: VE
+    homepage_url: http://www.sudeban.gob.ve/
+    scam_content_url: http://www.sudeban.gob.ve/index.php/category/npr/
+    feed:
+      url: http://www.sudeban.gob.ve/index.php/category/npr/feed/
+      format: rss
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [es]
+    content_focus: [phishing, government_impersonation, mobile_money_fraud]
+    high_value: false
+    license_status: unclear
+    license_note: "CRITICAL: site currently COMPROMISED — root RSS serving injected SEO-spam (pirated-software posts); category feed valid but empty. DO NOT ingest until remediated; source SUDEBAN alerts via trusted news mirrors meanwhile."
+    usable: "no"
+
+  - id: ve_efectococuyo
+    name: "Efecto Cocuyo — Cocuyo Chequea"
+    type: fact_checking
+    country: VE
+    homepage_url: https://efectococuyo.com/
+    scam_content_url: https://efectococuyo.com/cocuyo-chequea/
+    feed:
+      url: https://efectococuyo.com/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: daily
+    languages: [es]
+    content_focus: [phishing, job_scam, otp_kyc_fraud, deepfake_celebrity]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "IFCN-certified. Editorial copyright, cite-only. Site-wide RSS confirmed (filter for cocuyo-chequea). Best-confirmed VE fact-check feed. QR phishing, bank spoofing, fake jobs, vishing, TPS/immigration scams."
+    usable: headlines_only
+
+  - id: ve_cotejo
+    name: "Cotejo.info (Medianálisis)"
+    type: fact_checking
+    country: VE
+    homepage_url: https://cotejo.info/
+    scam_content_url: https://cotejo.info/fact-checking/
+    feed:
+      url: https://cotejo.info/feed/
+      format: rss
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: weekly
+    languages: [es]
+    content_focus: [phishing, lottery_prize, government_impersonation]
+    high_value: false
+    license_status: unclear
+    license_note: "IFCN-certified, Meta partner. Cloudflare bot-wall blocks fetch (incl. /feed/). WordPress feed routes likely exist (search showed /search/<term>/feed/rss2/) — re-verify /feed/rss2/. Sister: fakenews.cotejo.info."
+    usable: flagged
+
+  # =================== COSTA RICA ===================
+
+  - id: cr_sugef
+    name: "SUGEF — Superintendencia General de Entidades Financieras"
+    type: financial_regulator
+    country: CR
+    homepage_url: https://www.sugef.fi.cr/
+    scam_content_url: https://www.sugef.fi.cr/entidades_supervisadas/lista_entidades_supervisadas_por_SUGEF.aspx
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: monthly
+    languages: [es]
+    content_focus: [unauthorized_entity, investment_ponzi, loan_app]
+    high_value: true
+    license_status: open_gov
+    license_note: "Public info, attribute. Supervised-entities list (verify legitimacy) + ad-hoc fraud press notices. Bot-blocks (503), needs browser UA."
+    usable: flagged
+
+  - id: cr_csirtcr
+    name: "CSIRT-CR / MICITT — Dirección de Ciberseguridad"
+    type: cert_cyber
+    country: CR
+    homepage_url: https://www.micitt.go.cr/micitt/direccion-de-ciberseguridad
+    scam_content_url: https://www.micitt.go.cr/seguridaddigital/denuncia-estafas
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: weekly
+    languages: [es]
+    content_focus: [phishing, government_impersonation]
+    high_value: false
+    license_status: open_gov
+    license_note: "MICITT; alerts 'de acceso público'. Standalone csirt.cr refuses connection — use micitt.go.cr. 'Alertas Técnicas' distributed via Google Drive (pdf_periodic)."
+    usable: "yes"
+
+  - id: cr_bccr
+    name: "Banco Central de Costa Rica (BCCR)"
+    type: central_bank
+    country: CR
+    homepage_url: https://www.bccr.fi.cr/
+    scam_content_url: https://www.bccr.fi.cr/comunicacion-y-prensa
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [es, en]
+    content_focus: [mobile_money_fraud, government_impersonation]
+    high_value: false
+    license_status: open_gov
+    license_note: "Central-bank press releases (PDFs). SINPE Móvil 'wrong-transfer' scams, BCCR/president impersonation, cloned-site fraud."
+    usable: "yes"
+
+  - id: cr_nocomacuento
+    name: "No Coma Cuento (La Nación)"
+    type: fact_checking
+    country: CR
+    homepage_url: https://www.nacion.com/no-coma-cuento/
+    scam_content_url: https://www.nacion.com/no-coma-cuento/
+    feed:
+      url: "https://www.nacion.com/arc/outboundfeeds/rss/?outputType=xml"
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: weekly
+    languages: [es]
+    content_focus: [phishing, investment_ponzi, deepfake_celebrity, mobile_money_fraud]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Commercial newspaper, © La Nación; headlines/links usable, full-text restricted. Site-wide RSS confirmed (NOT topic-scoped — filter for No Coma Cuento). Category feed empty."
+    usable: headlines_only
+
+  # =================== PANAMA ===================
+
+  - id: pa_smv
+    name: "SMV — Superintendencia del Mercado de Valores (Panamá)"
+    type: financial_regulator
+    country: PA
+    homepage_url: https://supervalores.gob.pa/
+    scam_content_url: https://supervalores.gob.pa/alerta-al-inversionista/
+    feed:
+      url: https://supervalores.gob.pa/category/comunicados-avisos-y-actualidad/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: weekly
+    languages: [es, en]
+    content_focus: [unauthorized_entity, investment_ponzi, deepfake_celebrity]
+    high_value: true
+    license_status: open_gov
+    license_note: "Panama open-data lists SMV datasets cc-by; website unclear/open_gov. Comunicados RSS confirmed + site-wide /feed/. NOTE: /category/alerta-al-inversionista/feed/ is empty (alert list is a static page → html_scrape)."
+    usable: "yes"
+
+  - id: pa_sbp
+    name: "Superintendencia de Bancos de Panamá (SBP)"
+    type: financial_regulator
+    country: PA
+    homepage_url: https://www.superbancos.gob.pa/
+    scam_content_url: https://www.superbancos.gob.pa/en/laws/warn-list
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [es, en]
+    content_focus: [unauthorized_entity, investment_ponzi]
+    high_value: true
+    license_status: open_gov
+    license_note: "Bilingual 'Advisory/Warn List' of ~80 unauthorized entities (HTML + per-entity PDF notices). Custom CMS, no feed. Illegal deposit-taking, fake banks, Ponzi (MMM, Emgoldex)."
+    usable: "yes"
+
+  - id: pa_csirt
+    name: "CSIRT Panamá (cert.pa, AIG)"
+    type: cert_cyber
+    country: PA
+    homepage_url: https://cert.pa/
+    scam_content_url: https://cert.pa/
+    feed:
+      url: https://cert.pa/feed/
+      format: rss
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: weekly
+    languages: [es]
+    content_focus: [phishing, government_impersonation]
+    high_value: false
+    license_status: open_gov
+    license_note: "Gov CERT (AIG). WordPress /feed/ likely but WAF rejects ('requested URL was rejected') — unconfirmed. Mostly CVE alerts; fraud/phishing advisories among them."
+    usable: flagged
+
+  # =================== GUATEMALA ===================
+
+  - id: gt_sib
+    name: "SIB — Superintendencia de Bancos de Guatemala"
+    type: financial_regulator
+    country: GT
+    homepage_url: https://www.sib.gob.gt/
+    scam_content_url: https://www.sib.gob.gt/web/sib/alerta_al_publico
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [es]
+    content_focus: [phishing, sim_swap, otp_kyc_fraud, unauthorized_entity]
+    high_value: true
+    license_status: open_gov
+    license_note: "'Alerta al Público' + financial-ed hub + 'Estafas por medios electrónicos' PDF guide. Liferay CMS, 403 to bots, no RSS. Online banking fraud, SIM-swap, phishing."
+    usable: flagged
+
+  - id: gt_diaco
+    name: "DIACO — Dirección de Atención y Asistencia al Consumidor"
+    type: consumer_protection
+    country: GT
+    homepage_url: https://diaco.gob.gt/
+    scam_content_url: https://www.diaco.gob.gt/index.php/internet
+    feed:
+      url: https://diaco.gob.gt/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: irregular
+    languages: [es]
+    content_focus: [ecommerce_fake_shop, phishing]
+    high_value: false
+    license_status: open_gov
+    license_note: "Gov consumer agency. WordPress site-wide RSS confirmed (alerts among posts). Fake online stores, deceptive ads, World Cup 2026 scams."
+    usable: "yes"
+
+  - id: gt_gtcert
+    name: "GTCERT (Ministerio de Gobernación)"
+    type: cert_cyber
+    country: GT
+    homepage_url: https://gtcert.mingob.gob.gt/
+    scam_content_url: https://mingob.gob.gt/boletin-de-ciberseguridad-noviembre-2024-gt-cert/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: monthly
+    languages: [es]
+    content_focus: [phishing, otp_kyc_fraud]
+    high_value: false
+    license_status: open_gov
+    license_note: "Monthly 'Boletín de Ciberseguridad GT CERT' on MinGob site. WordPress feeds resolve to HTML (WAF), no valid RSS. Phishing, data theft, event-scam warnings."
+    usable: flagged
+
+  # =================== DOMINICAN REPUBLIC ===================
+
+  - id: do_sb
+    name: "Superintendencia de Bancos (SB) — Avisos de advertencia"
+    type: financial_regulator
+    country: DO
+    homepage_url: https://www.sb.gob.do/
+    scam_content_url: https://sb.gob.do/publicaciones/avisos-publicos/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: monthly
+    languages: [es]
+    content_focus: [unauthorized_entity, investment_ponzi]
+    high_value: true
+    license_status: unclear
+    license_note: "319+ official notices incl. 'Avisos de advertencia' vs unauthorized entities ('Misión Centinela' campaign). No RSS (/feed/ 404). Public official notices, reuse terms unstated."
+    usable: flagged
+
+  - id: do_proconsumidor
+    name: "Pro Consumidor"
+    type: consumer_protection
+    country: DO
+    homepage_url: https://proconsumidor.gob.do/
+    scam_content_url: https://proconsumidor.gob.do/alertas-de-consumo/
+    feed:
+      url: https://proconsumidor.gob.do/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: weekly
+    languages: [es]
+    content_focus: [ecommerce_fake_shop]
+    high_value: false
+    license_status: unclear
+    license_note: "Gov. WordPress SITE-WIDE RSS confirmed (NOT scam-scoped; category feed empty). 'Alertas de Consumo' are mostly product-safety recalls; financial scams via denuncias/news."
+    usable: flagged
+
+  - id: do_bcrd
+    name: "Banco Central de la República Dominicana (BCRD)"
+    type: central_bank
+    country: DO
+    homepage_url: https://www.bancentral.gov.do/
+    scam_content_url: https://www.bancentral.gov.do/a/d/2586-avisos
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [es]
+    content_focus: [deepfake_celebrity, investment_ponzi, government_impersonation]
+    high_value: false
+    license_status: unclear
+    license_note: "Note .gov.do TLD. Custom numeric CMS (/a/d/<id>), no RSS. AI/deepfake video impersonation of BCRD/governor promoting fake investment platforms; crypto warnings."
+    usable: flagged
+
+  - id: do_simv
+    name: "Superintendencia del Mercado de Valores (SIMV)"
+    type: financial_regulator
+    country: DO
+    homepage_url: https://simv.gob.do/
+    scam_content_url: https://simv.gob.do/advertencias-de-entidades-no-autorizadas/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [es]
+    content_focus: [unauthorized_entity, investment_ponzi]
+    high_value: true
+    license_status: unclear
+    license_note: "'Advertencias de Entidades no Autorizadas' (Harvest Trading CAP, CAPEX.COM, forex/CFD/crypto). WordPress likely but 403 to bots — re-verify in browser. Page existence via search only."
+    usable: flagged
+
+  # =================== REGIONAL ===================
+
+  - id: latam_maldita
+    name: "Maldita.es"
+    name_en: "Spain-based; covers LatAm bulos/timos"
+    type: fact_checking
+    country: ES
+    homepage_url: https://maldita.es/
+    scam_content_url: https://maldita.es/timo/
+    feed:
+      url: https://maldita.es/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: daily
+    languages: [es]
+    content_focus: [phishing, investment_ponzi, deepfake_celebrity, government_impersonation]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "CRITICAL: custom CC BY-NC-SA-style license PLUS explicit prohibition on inclusion in AI/ML systems without written consent. EXCLUDE from AI training/benchmark ingestion absent permission. RSS confirmed. 'Maldito Timo' scam section."
+    usable: "no"
+
+  - id: latam_afp
+    name: "AFP Factual (Agence France-Presse)"
+    type: fact_checking
+    country: REGIONAL
+    homepage_url: https://factual.afp.com/
+    scam_content_url: https://factual.afp.com/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: manual
+    update_cadence: daily
+    languages: [es, pt]
+    content_focus: [phishing, investment_ponzi, deepfake_celebrity, government_impersonation]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "© AFP, all rights reserved — paid commercial license required. The canonical 'do NOT reuse' case. No open RSS (syndication via paid wire/API); domain blocks bots."
+    usable: "no"

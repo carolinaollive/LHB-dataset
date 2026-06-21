@@ -1,0 +1,872 @@
+# LocalHarmBench — Source Catalog: SOUTHEAST ASIA
+# Schema: ../schema/source.schema.yaml
+# Covers SG, MY, PH, ID, TH, VN + cross-border (Cambodia/Myanmar/Laos scam compounds).
+# "confirmed: true" = feed endpoint fetched & validated. Many .gov sites bot-block
+# or geo-block (esp. Vietnam); flagged per source.
+
+region: southeast_asia
+updated: 2026-06-21
+sources:
+
+  # =================== SINGAPORE ===================
+
+  - id: sg_scamshield
+    name: "ScamShield"
+    name_en: "ScamShield — national anti-scam portal (MHA/SPF/NCPC/OGP)"
+    type: police_advisory
+    country: SG
+    homepage_url: https://www.scamshield.gov.sg/
+    scam_content_url: https://www.scamshield.gov.sg/i-want-protection-from-scams/learn-to-recognise-scams/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: realtime
+    languages: [en, zh, ms, ta]
+    content_focus: [investment_ponzi, job_scam, phishing, government_impersonation, ecommerce_fake_shop, romance_pig_butchering, otp_kyc_fraud]
+    high_value: true
+    license_status: restrictive_tos
+    license_note: "Singapore Government website TOS; public to read, not openly licensed. Per-scam-type pages are structured. Annual Scams & Cybercrime Briefs as PDFs."
+    usable: flagged
+    notes: "Successor to retired scamalert.sg (now 301-redirects here). Alerts pushed via WhatsApp/Telegram + app."
+
+  - id: sg_spf_scams
+    name: "Singapore Police Force — Scam Advisories"
+    type: police_advisory
+    country: SG
+    homepage_url: https://www.police.gov.sg/
+    scam_content_url: https://www.police.gov.sg/Advisories/Scams
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: weekly
+    languages: [en]
+    content_focus: [government_impersonation, phishing, investment_ponzi, ecommerce_fake_shop]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Singapore Government website TOS."
+    usable: flagged
+
+  - id: sg_mas_ial
+    name: "MAS Investor Alert List"
+    name_en: "Monetary Authority of Singapore — Investor Alert List"
+    type: financial_regulator
+    country: SG
+    homepage_url: https://www.mas.gov.sg/
+    scam_content_url: https://www.mas.gov.sg/investor-alert-list
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: weekly
+    languages: [en]
+    content_focus: [investment_ponzi, unauthorized_entity]
+    high_value: true
+    license_status: restrictive_tos
+    license_note: "MAS website TOS; list is public, no open-data license. OpenSanctions parses MAS IAL into a structured dataset/API (secondary, useful for ingestion)."
+    usable: flagged
+    notes: "List of unregulated entities flagged as possibly impersonating MAS-regulated firms. e.g. Bybit added June 2026."
+
+  - id: sg_case
+    name: "CASE — Consumers Association of Singapore"
+    type: ngo
+    country: SG
+    homepage_url: https://www.case.org.sg/
+    scam_content_url: https://www.case.org.sg/company-alert/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: monthly
+    languages: [en]
+    content_focus: [ecommerce_fake_shop]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "NGO site, copyright-reserved. Company Alert List is JS-rendered, no export. More consumer-dispute than scam."
+    usable: flagged
+
+  - id: sg_singcert
+    name: "SingCERT / Cyber Security Agency of Singapore"
+    type: cert_cyber
+    country: SG
+    homepage_url: https://www.csa.gov.sg/
+    scam_content_url: https://www.csa.gov.sg/alerts-and-advisories/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: weekly
+    languages: [en]
+    content_focus: [phishing]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Gov TOS. Circulating RSS path /Content/RSS-Feed returned 404/403 (unconfirmed/likely dead); email subscription only. Mostly technical CVEs, lower scam value."
+    usable: flagged
+
+  - id: sg_datagovsg_crime
+    name: "data.gov.sg — Scam & cybercrime statistics"
+    name_en: "GovTech Singapore open-data portal"
+    type: police_advisory
+    country: SG
+    homepage_url: https://data.gov.sg/
+    scam_content_url: https://data.gov.sg/datasets/d_ca0b908cf06a267ca06acbd5feb4465c/view
+    feed:
+      url: "https://data.gov.sg/api/action/datastore_search?resource_id=d_ca0b908cf06a267ca06acbd5feb4465c"
+      format: json_api
+      confirmed: true
+    ingestion_mechanism: json_api
+    update_cadence: irregular
+    languages: [en]
+    content_focus: [investment_ponzi, phishing]
+    high_value: false
+    license_status: open_gov
+    license_note: "Singapore Open Data Licence — freely reusable w/ attribution. The only clearly open source in SG. Aggregate stats (counts), not per-scam alert text."
+    usable: "yes"
+
+  - id: sg_factually
+    name: "Factually (Gov.sg)"
+    type: fact_checking
+    country: SG
+    homepage_url: https://www.factually.gov.sg/
+    scam_content_url: https://www.factually.gov.sg/corrections-and-clarifications/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [en]
+    content_focus: [government_impersonation]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Gov TOS. Policy-misinformation focus, NOT scams — low relevance."
+    usable: flagged
+
+  # =================== MALAYSIA ===================
+
+  - id: my_bnm_fca
+    name: "Bank Negara Malaysia — Financial Consumer Alert List"
+    type: central_bank
+    country: MY
+    homepage_url: https://www.bnm.gov.my
+    scam_content_url: https://www.bnm.gov.my/financial-consumer-alert-list
+    feed:
+      url: https://www.opensanctions.org/datasets/my_consumer_alert_list/
+      format: json_api
+      confirmed: true
+    ingestion_mechanism: json_api
+    update_cadence: weekly
+    languages: [ms, en]
+    content_focus: [unauthorized_entity, investment_ponzi]
+    high_value: true
+    license_status: open_gov
+    license_note: "FCA list page: Malaysian gov public advisory, no explicit license (open_gov). The confirmed JSON/CSV+API is the OpenSanctions mirror (daily refresh), licensed CC-BY-NC 4.0 — non-commercial. BNM site itself behind Cloudflare (403 to bots); native BNM OpenAPI does NOT carry the FCA list."
+    usable: flagged
+    notes: "Primary BNM page = html_scrape; OpenSanctions mirror = clean json_api but NC license."
+
+  - id: my_sc_ial
+    name: "Securities Commission Malaysia — Investor Alert List"
+    type: financial_regulator
+    country: MY
+    homepage_url: https://www.sc.com.my
+    scam_content_url: https://www.sc.com.my/investor-alert-list
+    feed:
+      url: https://www.opensanctions.org/datasets/my_investor_alert_list/
+      format: json_api
+      confirmed: true
+    ingestion_mechanism: json_api
+    update_cadence: monthly
+    languages: [en, ms]
+    content_focus: [unauthorized_entity, investment_ponzi]
+    high_value: true
+    license_status: open_gov
+    license_note: "SC list: gov advisory, no explicit license. Confirmed feed is OpenSanctions mirror (JSON/CSV+API, daily, CC-BY-NC 4.0). SC site has no native RSS/JSON; dated 'as at DD/MM/YYYY' bulletins act as pdf_periodic snapshots."
+    usable: flagged
+
+  - id: my_semakmule
+    name: "PDRM / CCID — Semak Mule"
+    name_en: "Royal Malaysia Police Commercial Crime — mule account/number checker"
+    type: police_advisory
+    country: MY
+    homepage_url: https://semakmule.rmp.gov.my
+    scam_content_url: https://semakmule.rmp.gov.my
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: manual
+    update_cadence: realtime
+    languages: [ms, en]
+    content_focus: [investment_ponzi, ecommerce_fake_shop, romance_pig_butchering, phishing]
+    high_value: true
+    license_status: restrictive_tos
+    license_note: "Operational police lookup tool (bank account/phone/company tied to reports); per-query, not a redistributable dataset. No bulk export/API. Cite as authoritative checker."
+    usable: "no"
+
+  - id: my_nsrc_nfcc
+    name: "National Scam Response Centre (NSRC) / NFCC"
+    type: police_advisory
+    country: MY
+    homepage_url: https://nfcc.jpm.gov.my/index.php/en/
+    scam_content_url: https://nfcc.jpm.gov.my/index.php/en/about-nsrc
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [ms, en]
+    content_focus: [phishing, romance_pig_butchering, courier_parcel_scam, government_impersonation]
+    high_value: false
+    license_status: open_gov
+    license_note: "Gov public-awareness content. Joomla site (feed possible via ?format=feed but unconfirmed). NSRC hotline 997."
+    usable: flagged
+
+  - id: my_mycert
+    name: "MyCERT — CyberSecurity Malaysia"
+    type: cert_cyber
+    country: MY
+    homepage_url: https://www.mycert.org.my
+    scam_content_url: https://www.mycert.org.my/portal/advisories
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: weekly
+    languages: [en]
+    content_focus: [phishing, ecommerce_fake_shop, otp_kyc_fraud]
+    high_value: false
+    license_status: open_gov
+    license_note: "Gov agency advisories, no explicit license. Docs reference 'MyCERT's Feed' (RSS likely) but URL unverifiable (site 403s to bots). Stable advisory IDs (MA-/SR-)."
+    usable: flagged
+
+  - id: my_sebenarnya
+    name: "Sebenarnya.my"
+    name_en: "Government anti-fake-news / fact-check portal (MCMC)"
+    type: fact_checking
+    country: MY
+    homepage_url: https://sebenarnya.my
+    scam_content_url: https://sebenarnya.my
+    feed:
+      url: https://sebenarnya.my/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: weekly
+    languages: [ms, en]
+    content_focus: [government_impersonation, lottery_prize, phishing, ecommerce_fake_shop]
+    high_value: true
+    license_status: open_gov
+    license_note: "Gov portal (MCMC), no explicit reuse license. WordPress; WP REST at /wp-json also likely. Strong structured scam-debunk source."
+    usable: "yes"
+
+  - id: my_kpdn
+    name: "KPDN — Ministry of Domestic Trade and Cost of Living"
+    type: consumer_protection
+    country: MY
+    homepage_url: https://www.kpdn.gov.my/en/
+    scam_content_url: https://www.kpdn.gov.my/en/consumerism/hak-pengguna/consumer-complaints
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [ms, en]
+    content_focus: [ecommerce_fake_shop]
+    high_value: false
+    license_status: open_gov
+    license_note: "Gov ministry content. E-commerce/consumer focus, less phishing/investment."
+    usable: flagged
+
+  # =================== PHILIPPINES ===================
+
+  - id: ph_sec
+    name: "SEC Philippines — Advisories"
+    type: financial_regulator
+    country: PH
+    homepage_url: https://www.sec.gov.ph/
+    scam_content_url: https://www.sec.gov.ph/investors-education-and-information/advisories/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: weekly
+    languages: [en]
+    content_focus: [investment_ponzi, romance_pig_butchering, unauthorized_entity, loan_app, government_impersonation]
+    high_value: true
+    license_status: open_gov
+    license_note: "PH government works; usable for public-interest reference, attribute (PH has no blanket public-domain rule). WordPress (year archives /advisories-2026/), each advisory links a signed PDF. 403s to bots; /feed/ likely but unconfirmed. STANDOUT high-value source — multiple advisories/week."
+    usable: "yes"
+
+  - id: ph_bsp
+    name: "Bangko Sentral ng Pilipinas (BSP)"
+    type: central_bank
+    country: PH
+    homepage_url: https://www.bsp.gov.ph/
+    scam_content_url: https://www.bsp.gov.ph/SitePages/MediaAndResearch/Multimedia_FinancialConsumerProtection.aspx
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [en]
+    content_focus: [phishing, otp_kyc_fraud, investment_ponzi, government_impersonation]
+    high_value: false
+    license_status: open_gov
+    license_note: "Gov publication, attribute. SharePoint .aspx; many advisories are PDFs. No RSS."
+    usable: "yes"
+
+  - id: ph_pnp_acg
+    name: "PNP Anti-Cybercrime Group (ACG)"
+    type: police_advisory
+    country: PH
+    homepage_url: https://acg.pnp.gov.ph/
+    scam_content_url: https://acg.pnp.gov.ph/main/cyber-security-bulletin.html
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: weekly
+    languages: [en]
+    content_focus: [phishing, ecommerce_fake_shop, job_scam, government_impersonation]
+    high_value: false
+    license_status: open_gov
+    license_note: "Joomla (feed via ?format=feed possible, unconfirmed; site blocks fetch). Facebook is primary real-time channel."
+    usable: flagged
+
+  - id: ph_dti
+    name: "Department of Trade and Industry (DTI)"
+    type: consumer_protection
+    country: PH
+    homepage_url: https://www.dti.gov.ph/
+    scam_content_url: https://consumercare.dti.gov.ph/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [en]
+    content_focus: [ecommerce_fake_shop, phishing]
+    high_value: false
+    license_status: open_gov
+    license_note: "Gov. New e-Commerce Bureau (RA 11967) handles online-transaction complaints."
+    usable: flagged
+
+  - id: ph_cicc_scamwatch
+    name: "CICC — ScamWatch Pilipinas"
+    type: cert_cyber
+    country: PH
+    homepage_url: https://cicc.gov.ph/
+    scam_content_url: https://scamwatchpilipinas.com/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [en]
+    content_focus: [ecommerce_fake_shop, phishing, investment_ponzi, romance_pig_butchering, job_scam]
+    high_value: false
+    license_status: open_gov
+    license_note: "Citizen arm of CICC (under DICT). NOTE: live domain is scamwatchpilipinas.com (NOT scamwatch.gov.ph). Hotline 1326, eGovPH app."
+    usable: flagged
+
+  - id: ph_ntc
+    name: "National Telecommunications Commission (NTC)"
+    type: telecom_regulator
+    country: PH
+    homepage_url: https://ntc.gov.ph/
+    scam_content_url: https://ntc.gov.ph/text-spam-spam-report/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [en]
+    content_focus: [phishing, courier_parcel_scam, job_scam, investment_ponzi]
+    high_value: false
+    license_status: open_gov
+    license_note: "WordPress (/feed/ likely, unverified). Smishing/SIM-registration focus."
+    usable: flagged
+
+  - id: ph_verafiles
+    name: "VERA Files — Fact Check"
+    type: fact_checking
+    country: PH
+    homepage_url: https://verafiles.org/
+    scam_content_url: https://verafiles.org/section/fact-check
+    feed:
+      url: https://verafiles.org/section/fact-check/feed
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: weekly
+    languages: [en]
+    content_focus: [deepfake_celebrity, government_impersonation, investment_ponzi, lottery_prize]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Copyrighted; IFCN signatory + Meta 3PFC. Fair-use/attribution for benchmarking, not redistribution. Section feed confirmed live."
+    usable: headlines_only
+
+  - id: ph_rappler
+    name: "Rappler — Fact Check"
+    type: fact_checking
+    country: PH
+    homepage_url: https://www.rappler.com/
+    scam_content_url: https://www.rappler.com/newsbreak/fact-check/
+    feed:
+      url: https://www.rappler.com/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: daily
+    languages: [en]
+    content_focus: [deepfake_celebrity, government_impersonation, investment_ponzi]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Copyrighted; attribution/fair-use only. Main feed confirmed but mixed content (filter by fact-check category); dedicated section feed 403s (WAF)."
+    usable: headlines_only
+
+  # =================== INDONESIA ===================
+
+  - id: id_ojk_pasti
+    name: "OJK — Satgas PASTI / Investor Alert Portal"
+    name_en: "Financial Services Authority — Illegal Financial Activity Task Force"
+    type: financial_regulator
+    country: ID
+    homepage_url: https://ojk.go.id/waspada-investasi/id/default.aspx
+    scam_content_url: https://sikapiuangmu.ojk.go.id/FrontEnd/AlertPortal/Negative
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: monthly
+    languages: [id, en]
+    content_focus: [investment_ponzi, loan_app, unauthorized_entity]
+    high_value: true
+    license_status: open_gov
+    license_note: "Indonesian gov public information (KIP regime); no explicit reuse license, attribution + verification advised. HIGHEST-value illegal-entity list (investasi/pinjol ilegal). HTML table + monthly PDF attachments; no feed."
+    usable: "yes"
+
+  - id: id_bi
+    name: "Bank Indonesia"
+    type: central_bank
+    country: ID
+    homepage_url: https://www.bi.go.id/
+    scam_content_url: https://www.bi.go.id/id/informasi-publik/isu-hoaks/default.aspx
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [id, en]
+    content_focus: [government_impersonation, lottery_prize, advance_fee_419, job_scam]
+    high_value: false
+    license_status: open_gov
+    license_note: "Gov public information. Domain blocks bots; pages confirmed via search."
+    usable: flagged
+
+  - id: id_komdigi
+    name: "Komdigi (ex-Kominfo) — hoax/scam clarifications"
+    type: telecom_regulator
+    country: ID
+    homepage_url: https://www.komdigi.go.id/
+    scam_content_url: https://www.komdigi.go.id/berita/klarifikasi-hoaks
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: daily
+    languages: [id]
+    content_focus: [government_impersonation, lottery_prize, phishing, job_scam]
+    high_value: false
+    license_status: open_gov
+    license_note: "Gov public information. Reporting intake at aduankonten.id. Legacy stophoaks.kominfo.go.id is down."
+    usable: flagged
+
+  - id: id_bssn
+    name: "BSSN — Gov-CSIRT Indonesia"
+    type: cert_cyber
+    country: ID
+    homepage_url: https://bssn.go.id/
+    scam_content_url: https://bssn.go.id/gov-csirt-indonesia/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [id, en]
+    content_focus: [phishing]
+    high_value: false
+    license_status: open_gov
+    license_note: "Gov agency. Less consumer-scam-specific (technical advisories). 503/blocked to fetch."
+    usable: flagged
+
+  - id: id_patrolisiber
+    name: "Polri — Patroli Siber"
+    type: police_advisory
+    country: ID
+    homepage_url: https://patrolisiber.id/
+    scam_content_url: https://www.patrolisiber.id/home
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [id]
+    content_focus: [ecommerce_fake_shop, phishing, government_impersonation]
+    high_value: false
+    license_status: open_gov
+    license_note: "Police public-service site (intake + education), not a published alert list."
+    usable: flagged
+
+  - id: id_turnbackhoax
+    name: "Mafindo — TurnBackHoax.id"
+    type: fact_checking
+    country: ID
+    homepage_url: https://turnbackhoax.id/
+    scam_content_url: https://turnbackhoax.id/
+    feed:
+      url: http://turnbackhoax.id/feed
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: daily
+    languages: [id]
+    content_focus: [job_scam, government_impersonation, deepfake_celebrity, investment_ponzi]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Mafindo NGO, IFCN signatory; reuse needs attribution/permission. NOTE: https /feed/ 301-redirects to http; follow redirect. Heavy [PENIPUAN] scam tagging — strong feed."
+    usable: headlines_only
+
+  - id: id_cekfakta
+    name: "CekFakta.com"
+    name_en: "Mafindo + AJI + AMSI fact-check coalition"
+    type: fact_checking
+    country: ID
+    homepage_url: https://cekfakta.com/
+    scam_content_url: https://cekfakta.com/
+    feed:
+      url: https://cekfakta.com/feed
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: daily
+    languages: [id]
+    content_focus: [job_scam, government_impersonation, deepfake_celebrity, investment_ponzi]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Journalism coalition; attribution required, redistribution may need permission. Confirmed RSS 2.0."
+    usable: headlines_only
+
+  # =================== THAILAND ===================
+
+  - id: th_sec_alert
+    name: "SEC Thailand — Investor Alert"
+    type: financial_regulator
+    country: TH
+    homepage_url: https://www.sec.or.th/EN
+    scam_content_url: https://market.sec.or.th/public/idisc/en/InvestorAlert
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: weekly
+    languages: [en, th]
+    content_focus: [unauthorized_entity, investment_ponzi, romance_pig_butchering]
+    high_value: true
+    license_status: open_gov
+    license_note: "Public regulator warning list (8,829+ records), filterable HTML DB; no RSS/JSON/CSV/API. Check robots/TOS for bulk use. Highest-value structured TH list."
+    usable: "yes"
+
+  - id: th_bot
+    name: "Bank of Thailand (BOT)"
+    type: central_bank
+    country: TH
+    homepage_url: https://www.bot.or.th/en/home.html
+    scam_content_url: https://www.bot.or.th/en/fraud/fraud-measure-development.html
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [th, en]
+    content_focus: [mobile_money_fraud, phishing, government_impersonation]
+    high_value: false
+    license_status: open_gov
+    license_note: "Thai gov agency content, attribute. Consumer help via 1213.or.th. No public blacklist (directs to regulated-provider lists)."
+    usable: "yes"
+
+  - id: th_ccib
+    name: "Cyber Crime Investigation Bureau (CCIB)"
+    type: police_advisory
+    country: TH
+    homepage_url: https://ccib.go.th/
+    scam_content_url: https://ccib.go.th/
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [th]
+    content_focus: [romance_pig_butchering, courier_parcel_scam, investment_ponzi]
+    high_value: false
+    license_status: open_gov
+    license_note: "Google Sites; no RSS. Alerts largely video/graphic. Hotline 1441."
+    usable: flagged
+
+  - id: th_thaicert
+    name: "ThaiCERT (NCSA)"
+    type: cert_cyber
+    country: TH
+    homepage_url: https://www.thaicert.or.th/en/homepage/
+    scam_content_url: https://www.thaicert.or.th/en/category/cybenews_en/
+    feed:
+      url: https://www.thaicert.or.th/en/category/cybenews_en/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: weekly
+    languages: [th, en]
+    content_focus: [phishing, otp_kyc_fraud]
+    high_value: false
+    license_status: open_gov
+    license_note: "Gov CERT, reusable w/ attribution. WordPress (every category supports /feed/). More cyber-threat than consumer-scam."
+    usable: "yes"
+
+  - id: th_afnc
+    name: "Anti-Fake News Center Thailand (AFNC)"
+    type: fact_checking
+    country: TH
+    homepage_url: https://www.antifakenewscenter.com/
+    scam_content_url: https://www.antifakenewscenter.com/category/news/
+    feed:
+      url: https://www.antifakenewscenter.com/category/news/feed/
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: daily
+    languages: [th]
+    content_focus: [government_impersonation, investment_ponzi, phishing]
+    high_value: true
+    license_status: open_gov
+    license_note: "Gov (DES) content. WordPress RSS confirmed. Open Data portal opendata.antifakenewscenter.com offers CSV/XLSX (no JSON API). Treat open_gov, attribute."
+    usable: "yes"
+
+  - id: th_etda_1212
+    name: "ETDA — 1212 OCC (Online Complaint Center)"
+    type: consumer_protection
+    country: TH
+    homepage_url: https://www.etda.or.th/en/
+    scam_content_url: https://www.etda.or.th/en/Our-Service/Online-Consumer-Protection.aspx
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [th, en]
+    content_focus: [ecommerce_fake_shop, phishing, job_scam, investment_ponzi]
+    high_value: false
+    license_status: open_gov
+    license_note: "Gov agency. Domain blocked to fetch in research; confirmed via search."
+    usable: flagged
+
+  # =================== VIETNAM ===================
+
+  - id: vn_chongluadao
+    name: "Chống Lừa Đảo (ChongLuaDao)"
+    name_en: "Anti-scam community NGO — phishing/scam blocklist"
+    type: ngo
+    country: VN
+    homepage_url: https://chongluadao.vn
+    scam_content_url: https://chongluadao.vn
+    feed:
+      url: https://github.com/elliotwutingfeng/ChongLuaDao-Phishing-Blocklist
+      format: json_api
+      confirmed: true
+    ingestion_mechanism: json_api
+    update_cadence: daily
+    languages: [vi, en]
+    content_focus: [phishing, ecommerce_fake_shop]
+    high_value: true
+    license_status: cc_other
+    license_note: "Primary api.chongluadao.vn = unclear/restrictive ToS. Use the CONFIRMED GitHub mirror (urls.txt/ips.txt + ABP/Pi-hole formats, daily, BSD-3-Clause — open, attribute). Cleanest VN machine-readable scam-URL feed."
+    usable: "yes"
+
+  - id: vn_tinnhiemmang
+    name: "Tín Nhiệm Mạng (NCSC)"
+    name_en: "NCSC trust/anti-scam portal — scam-website blacklist"
+    type: cert_cyber
+    country: VN
+    homepage_url: https://tinnhiemmang.vn
+    scam_content_url: https://tinnhiemmang.vn/website-lua-dao
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: realtime
+    languages: [vi]
+    content_focus: [phishing, government_impersonation, ecommerce_fake_shop]
+    high_value: true
+    license_status: open_gov
+    license_note: "Gov. ~125k+ fraudulent addresses (cumulative). 403 to fetcher; no documented public API/RSS; lookup is a search box. May need VN egress IP."
+    usable: flagged
+
+  - id: vn_sbv
+    name: "State Bank of Vietnam (SBV)"
+    type: central_bank
+    country: VN
+    homepage_url: https://www.sbv.gov.vn
+    scam_content_url: https://www.sbv.gov.vn/webcenter/portal/en/home/sbv
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [vi, en]
+    content_focus: [government_impersonation, phishing, otp_kyc_fraud]
+    high_value: false
+    license_status: open_gov
+    license_note: "Oracle WebCenter portal; no RSS; geo/bot-blocks non-VN IPs. Warnings published as news items."
+    usable: flagged
+
+  - id: vn_ssc
+    name: "State Securities Commission (SSC)"
+    type: financial_regulator
+    country: VN
+    homepage_url: https://ssc.gov.vn/webcenter/portal/ssc
+    scam_content_url: https://ssc.gov.vn/webcenter/portal/ssc
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [vi, en]
+    content_focus: [investment_ponzi, unauthorized_entity]
+    high_value: false
+    license_status: open_gov
+    license_note: "WebCenter portal, no RSS. Investor warnings as news (fake securities firms, unlicensed apps)."
+    usable: flagged
+
+  - id: vn_khonggianmang
+    name: "National Cyberspace Portal (khonggianmang.vn)"
+    type: cert_cyber
+    country: VN
+    homepage_url: https://khonggianmang.vn
+    scam_content_url: https://khonggianmang.vn
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [vi]
+    content_focus: [phishing, government_impersonation, investment_ponzi, romance_pig_butchering, job_scam]
+    high_value: false
+    license_status: open_gov
+    license_note: "NCSC-run anti-fraud handbook ('24 forms of online fraud'). Geo-blocked from sandbox."
+    usable: flagged
+
+  # =================== REGIONAL / CROSS-BORDER ===================
+
+  - id: sea_unodc_roseap
+    name: "UNODC — Regional Office for SE Asia & Pacific (ROSEAP)"
+    type: ngo
+    country: REGIONAL
+    homepage_url: https://www.unodc.org/roseap/
+    scam_content_url: https://www.unodc.org/roseap/en/2025/04/cyberfraud-inflection-point-mekong/story.html
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: pdf_periodic
+    update_cadence: irregular
+    languages: [en]
+    content_focus: [romance_pig_butchering, investment_ponzi, job_scam]
+    high_value: true
+    license_status: open_gov
+    license_note: "UN material; reuse w/ attribution (standard UN terms). Authoritative on scam compounds (Cambodia/Myanmar/Laos), pig-butchering, job-scam trafficking. Flagship PDF reports (Inflection Point 2025, TOC Convergence 2024)."
+    usable: "yes"
+    notes: "Best source for cross-border Cambodia/Myanmar/Laos scam-compound intelligence."
+
+  - id: sea_interpol
+    name: "INTERPOL — scam-centre advisories"
+    type: police_advisory
+    country: REGIONAL
+    homepage_url: https://www.interpol.int
+    scam_content_url: https://www.interpol.int/en/News-and-Events/News
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [en]
+    content_focus: [romance_pig_butchering, job_scam]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Copyrighted; headlines/links usable, full reuse restricted. Human-trafficking-fueled scam centres, global scam-centre expansion."
+    usable: headlines_only
+
+  - id: sea_usembassy_travel
+    name: "US State Dept Travel Advisories (Cambodia/Burma/Laos)"
+    type: police_advisory
+    country: REGIONAL
+    homepage_url: https://travel.state.gov/
+    scam_content_url: https://travel.state.gov/content/travel/en/traveladvisories/traveladvisories/cambodia-travel-advisory.html
+    feed:
+      url: https://travel.state.gov/content/travel/en/rss.html
+      format: rss
+      confirmed: true
+    ingestion_mechanism: rss
+    update_cadence: irregular
+    languages: [en]
+    content_focus: [job_scam, romance_pig_butchering]
+    high_value: false
+    license_status: public_domain
+    license_note: "US federal works — public domain, freely reusable. Travel advisories flag work-scam centers/trafficking in Cambodia, Burma/Myanmar, Laos. US Embassy WordPress /feed/ endpoints probable but unconfirmed."
+    usable: "yes"
+
+  - id: sea_gasa
+    name: "Global Anti-Scam Alliance (GASA)"
+    type: ngo
+    country: REGIONAL
+    homepage_url: https://gasa.org
+    scam_content_url: https://gasa.org/knowledge-base
+    feed:
+      url: null
+      format: none
+      confirmed: false
+    ingestion_mechanism: html_scrape
+    update_cadence: irregular
+    languages: [en]
+    content_focus: [investment_ponzi, phishing, ecommerce_fake_shop]
+    high_value: false
+    license_status: restrictive_tos
+    license_note: "Reports often gated; cite/attribute, restrictive for bulk reuse. Country/regional 'State of Scams' reports incl. Asia-Pacific. ScamAdviser is affiliated."
+    usable: headlines_only
